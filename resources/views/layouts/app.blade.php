@@ -34,7 +34,7 @@
                     <li><a href="#" class="text-black">Сериалы</a></li>
                     <li><a href="#" class="text-black">Новости</a></li>
                     @if (Auth::user() and Auth::user()->is_admin == 1)
-                        <li><a href="#" class="text-black">Админка</a></li>
+                        <li><a href="{{ route('admin') }}" class="text-black">Админка</a></li>
                     @endif
                 </ul>
             </nav>

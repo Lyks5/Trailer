@@ -35,4 +35,30 @@ class AdminController extends Controller
         Poster::where('id', $post_id)->delete();
         return redirect()->back();
     }
+    public function edit_poster($post_id)
+    {
+        $poster = Poster::where('id', $post_id)->first();
+        return view('editPost', ['poster' => $poster]);
+    }
+    public function save_edit($poster_id, Request $request)
+    {
+        $request->validate([
+            'name' => 'string|max:255',
+            'description' => 'string'
+        ]);
+    
+        $poster = Poster::find($poster_id);
+    
+        if ($request->has('name')) {
+            $poster->name = $request->name;
+        }
+    
+        if ($request->has('description')) {
+            $poster->description = $request->description;
+        }
+    
+        $poster->save();
+    
+        return redirect()->back();
+    }
 }
