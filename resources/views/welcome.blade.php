@@ -86,110 +86,15 @@
         <h2 class="text-2xl font-bold mb-4">Что смотреть в мае: 10 главных премьер в кинотеатрах и на стримингах</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
             <!-- Movie Card -->
-            <div class="bg-white shadow rounded overflow-hidden">
-                <img src="https://static.kinoafisha.info/k/movie_posters/220/upload/movie_posters/4/7/2/8369274/626345629632.jpg.webp"
-                    alt="Movie 1" class="w-full h-70 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-bold">Сто лет тому вперед</h3>
-                    <p class="text-sm">приключения, семейный, 2024, Россия</p>
+            @foreach ($posts as $post)
+                <div class="bg-white shadow rounded overflow-hidden">
+                    <img src="{{ asset($post->image) }}" alt="Movie 1" class="w-full h-70 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-lg font-bold">{{ $post->name }}</h3>
+                        <a href="{{ route('Post', ['post_id' => $post->id]) }}">Подробнее</a>
+                    </div>
                 </div>
-            </div>
-            <div class="bg-white shadow rounded overflow-hidden">
-                <img src="https://static.kinoafisha.info/k/movie_posters/220/upload/movie_posters/4/7/2/8369274/626345629632.jpg.webp"
-                    alt="Movie 1" class="w-full h-70 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-bold">Рай под ногами матерей</h3>
-                    <p class="text-sm">драма, 2024, Кыргызстан</p>
-                </div>
-            </div>
-            <div class="bg-white shadow rounded overflow-hidden">
-                <img src="https://static.kinoafisha.info/k/movie_posters/220/upload/movie_posters/4/7/2/8369274/626345629632.jpg.webp"
-                    alt="Movie 1" class="w-full h-70 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-bold">Любви не бывает?</h3>
-                    <p class="text-sm">мелодрама, комедия, 2024, Россия</p>
-                </div>
-            </div>
-            <div class="bg-white shadow rounded overflow-hidden">
-                <img src="https://static.kinoafisha.info/k/movie_posters/220/upload/movie_posters/4/7/2/8369274/626345629632.jpg.webp"
-                    alt="Movie 1" class="w-full h-70 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-bold">Летучий корабль</h3>
-                    <p class="text-sm">сказка, 2024, Россия</p>
-                </div>
-            </div>
-            <div class="bg-white shadow rounded overflow-hidden">
-                <img src="https://static.kinoafisha.info/k/movie_posters/220/upload/movie_posters/4/7/2/8369274/626345629632.jpg.webp"
-                    alt="Movie 1" class="w-full h-70 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-bold">Блиндаж</h3>
-                    <p class="text-sm">фантастика, военный, 2024, Россия</p>
-                </div>
-            </div>
-            <div class="bg-white shadow rounded overflow-hidden">
-                <img src="https://static.kinoafisha.info/k/movie_posters/220/upload/movie_posters/4/7/2/8369274/626345629632.jpg.webp"
-                    alt="Movie 1" class="w-full h-70 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-bold">Неприличные гости</h3>
-                    <p class="text-sm">комедия, 2024, Россия</p>
-                </div>
-            </div>
-            <div class="bg-white shadow rounded overflow-hidden">
-                <img src="https://static.kinoafisha.info/k/movie_posters/220/upload/movie_posters/4/7/2/8369274/626345629632.jpg.webp"
-                    alt="Movie 1" class="w-full h-70 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-bold">Всемирный потоп</h3>
-                    <p class="text-sm">драма, триллер, 2023, Великобритания</p>
-                </div>
-            </div>
-            <div class="bg-white shadow rounded overflow-hidden">
-                <img src="https://static.kinoafisha.info/k/movie_posters/220/upload/movie_posters/4/7/2/8369274/626345629632.jpg.webp"
-                    alt="Movie 1" class="w-full h-70 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-bold">Приключения Панды</h3>
-                    <p class="text-sm">приключения, анимация, 2024, Дания / Нидерланды</p>
-                </div>
-            </div>
-            <div class="bg-white shadow rounded overflow-hidden">
-                <img src="https://static.kinoafisha.info/k/movie_posters/220/upload/movie_posters/4/7/2/8369274/626345629632.jpg.webp"
-                    alt="Movie 1" class="w-full h-70 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-bold">Марс Экспресс</h3>
-                    <p class="text-sm">боевик, анимация, детектив</p>
-                </div>
-            </div>
-            <div class="bg-white shadow rounded overflow-hidden">
-                <img src="https://static.kinoafisha.info/k/movie_posters/220/upload/movie_posters/4/7/2/8369274/626345629632.jpg.webp"
-                    alt="Movie 1" class="w-full h-70 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-bold">Как я встретил ее маму</h3>
-                    <p class="text-sm">комедия, 9 мая 2024</p>
-                </div>
-            </div>
-            <div class="bg-white shadow rounded overflow-hidden">
-                <img src="https://static.kinoafisha.info/k/movie_posters/220/upload/movie_posters/4/7/2/8369274/626345629632.jpg.webp"
-                    alt="Movie 1" class="w-full h-70 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-bold">Шпион на всю голову</h3>
-                    <p class="text-sm">боевик, триллер, драма, комедия</p>
-                </div>
-            </div>
-            <div class="bg-white shadow rounded overflow-hidden">
-                <img src="https://static.kinoafisha.info/k/movie_posters/220/upload/movie_posters/4/7/2/8369274/626345629632.jpg.webp"
-                    alt="Movie 1" class="w-full h-70 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-bold">Бугимен. Царство мертвых</h3>
-                    <p class="text-sm">ужасы, детектив</p>
-                </div>
-            </div>
-            <div class="bg-white shadow rounded overflow-hidden">
-                <img src="https://static.kinoafisha.info/k/movie_posters/220/upload/movie_posters/4/7/2/8369274/626345629632.jpg.webp"
-                    alt="Movie 1" class="w-full h-70 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-bold">Чистильщик бассейнов</h3>
-                    <p class="text-sm">комедия, детектив</p>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Poster;
 
 class HomeController extends Controller
 {
@@ -27,6 +28,13 @@ class HomeController extends Controller
     }
     public function welcome()
     {
-        return view('welcome');
+        $posts = Poster::where('visibility', 1)->limit(10)->get();
+        return view('welcome', ['posts' => $posts]);
     }
+    public function post($post_id)
+    {
+        $post = Poster::where('id', $post_id)->first();
+        return view('post', ['post' => $post]);
+    }
+ 
 }

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-{{-- Mr. penis --}}
+
 @section('content')
     <div class="py-12 max-w-9xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -10,22 +10,8 @@
                     Добавить постер
                 </button>
             </div>
-            <div class="p-6 text-gray-900 dark:text-gray-100 grid w-auto grid-cols-5 gap-4 place-items-center">
-                @foreach ($posters as $post)
-                    <div class="bg-white shadow rounded overflow-hidden w-min">
-                        <img src="{{ asset($post->image) }}" alt="Movie 1" class="w-full h-70 object-cover">
-                        <div class="p-4">
-                            <h3 class="text-lg font-bold">{{ $post->name }}</h3>
-                            <a href="{{ route('Post', ['post_id' => $post->id]) }}">Подробнее</a>
-                            <div class="flex justify-between gap-3 pt-3">
-                                <a href="{{ route('DeletePost', ['post_id' => $post->id]) }}" type="button"
-                                    class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Удалить</a>
-                                <a href="" type="button"
-                                    class="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">Редактировать</a>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
+            <div class="p-6 text-gray-900 dark:text-gray-100 grid grid-cols-4 gap-4">
+                <p>Постеров нет</p>
             </div>
         </div>
     </div>
@@ -84,5 +70,4 @@
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 @endsection
