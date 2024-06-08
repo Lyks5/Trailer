@@ -36,5 +36,10 @@ class HomeController extends Controller
         $post = Poster::where('id', $post_id)->first();
         return view('post', ['post' => $post]);
     }
- 
+    public function search(Request $request)
+    {
+        $word = $request->word;
+        $results = Poster::where('name', 'like', "%{$word}%")->orWhere('description', 'like', "%{$word}%")->orderBy('id')->get();
+        return view('search', ['posts' => $results]);
+    }
 }

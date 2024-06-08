@@ -44,13 +44,16 @@
                     <li><a href="#" class="text-black">Сериалы</a></li>
                     <li><a href="#" class="text-black">Новости</a></li>
                     @if (Auth::user() and Auth::user()->is_admin == 1)
-                        <li><a href="#" class="text-black">Админка</a></li>
+                        <li><a href="{{ route('admin') }}" class="text-black">Админка</a></li>
                     @endif
                 </ul>
             </nav>
             <div class="flex items-center space-x-4">
-                <input type="text" placeholder="Поиск" class="border rounded px-3 py-1">
-                <button class="text-black">🔍</button>
+                <form action="{{ route('Search') }}" method="POST">
+                    @csrf
+                    <input type="text" name="word" placeholder="Поиск" class="border rounded px-3 py-1">
+                    <button type="submit" class="text-black">🔍</button>
+                </form>
                 @if (Auth::user())
                     <a href="home" class="text-black">{{ Auth::user()->name }}</a>
                 @else
