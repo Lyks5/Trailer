@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="ru">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Киноафиша</title>
-    {{-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> --}}
-    @vite('resources/css/app.css')
+@section('content')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/min/tiny-slider.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/tiny-slider.css" rel="stylesheet">
     <style>
@@ -27,10 +21,6 @@
             border-radius: 50%;
         }
     </style>
-</head>
-
-<body class="bg-gray-100">
-    <!-- Main Slider -->
     <div class="container mx-auto my-6">
         <div class="relative">
             <div class="tns-controls">
@@ -66,58 +56,6 @@
             @endforeach
         </div>
     </div>
-
-    <!-- Footer -->
-    <footer class="bg-white py-6">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                <div>
-                    <h4 class="font-bold mb-2">Афиша</h4>
-                    <ul>
-                        <li><a href="#" class="text-gray-600">Кинотеатры</a></li>
-                        <li><a href="#" class="text-gray-600">Премьеры</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-bold mb-2">Онлайн</h4>
-                    <ul>
-                        <li><a href="#" class="text-gray-600">Фильмы</a></li>
-                        <li><a href="#" class="text-gray-600">Мультфильмы</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-bold mb-2">Что посмотреть</h4>
-                    <ul>
-                        <li><a href="#" class="text-gray-600">Премьеры</a></li>
-                        <li><a href="#" class="text-gray-600">Рейтинги</a></li>
-                        <li><a href="#" class="text-gray-600">Трейлеры</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-bold mb-2">Сериалы</h4>
-                    <ul>
-                        <li><a href="#" class="text-gray-600">Новости</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-bold mb-2">Media</h4>
-                    <ul>
-                        <li><a href="#" class="text-gray-600">Новости</a></li>
-                        <li><a href="#" class="text-gray-600">Трейлеры</a></li>
-                        <li><a href="#" class="text-gray-600">Персоны</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-bold mb-2">Мое</h4>
-                    <ul>
-                        <li><a href="#" class="text-gray-600">Избранное</a></li>
-                        <li><a href="#" class="text-gray-600">Расписание</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </footer>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var slider = tns({
@@ -133,6 +71,4 @@
             });
         });
     </script>
-</body>
-
-</html>
+@endsection

@@ -3,8 +3,8 @@
 @section('content')
     <div class="py-8">
         <div class="max-w-9xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100 grid grid-cols-4 gap-4">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900 grid grid-cols-4 gap-4">
                     <div class="max-w-6xl w-full mx-auto my-0 mb-32">
                         <div class="user_info flex mb-14">
                             <div class="info ml-8">

@@ -1,7 +1,9 @@
 <header class="bg-white shadow">
     <div class="container mx-auto px-4 py-4 flex justify-between items-center">
         <div class="flex items-center">
-            <h1 class="text-orange-600 text-3xl font-bold">КИНОАФИША</h1>
+            <a href="{{ route('welcome') }}">
+                <h1 class="text-orange-600 text-3xl font-bold">КИНОАФИША</h1>
+            </a>
         </div>
         <nav class="flex-grow">
             <ul class="flex justify-center space-x-8">

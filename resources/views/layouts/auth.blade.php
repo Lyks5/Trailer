@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,13 +8,15 @@
     <title>@yield('title')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body style="height: 100vh;">
 
-<main style="height: 100%">
+    <main style="height: 100%">
 
-    @yield('content')
+        @yield('content')
 
-</main>
+    </main>
 
 </body>
+
 </html>
