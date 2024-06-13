@@ -42,7 +42,7 @@
 
     <!-- Movies Grid -->
     <div class="container mx-auto px-4 py-8">
-        <h2 class="text-2xl font-bold mb-4">Что смотреть в мае: 10 главных премьер в кинотеатрах и на стримингах</h2>
+        <h2 class="text-2xl font-bold mb-4">10 главных премьер в кинотеатрах и на стримингах</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
             <!-- Movie Card -->
             @foreach ($posts as $post)

@@ -8,7 +8,7 @@
         <nav class="flex-grow">
             <ul class="flex justify-center space-x-8">
                 <li><a href="#" class="text-black">Афиша</a></li>
-                <li><a href="#" class="text-black">Что посмотреть</a></li>
+                <li><a href="{{ route('see') }}" class="text-black">Что посмотреть</a></li>
                 <li><a href="#" class="text-black">Сериалы</a></li>
                 <li><a href="#" class="text-black">Новости</a></li>
                 @if (Auth::user() and Auth::user()->is_admin == 1)

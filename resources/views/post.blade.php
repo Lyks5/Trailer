@@ -1,70 +1,74 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="py-12 max-w-9xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6 text-gray-900 h-auto">
-                <h1 class="p-3 font-semibold">Постеры</h1>
-                <button type="button" data-modal-target="default-modal" data-modal-toggle="default-modal"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">
-                    Добавить постер
-                </button>
-            </div>
-            <div class="p-6 text-gray-9000 grid grid-cols-4 gap-4">
-                <p>Постеров нет</p>
+    <div class="max-w-screen-2xl w-full h-auto mx-auto my-0 mb-20">
+        <div class="flex justify-between pt-20">
+            <div class="product-main_info flex">
+                <div class="flex gap-5 h-full">
+                    <img src="{{ asset($post->image) }}" alt="Product Image" style="width: 20%">
+                    <div class="flex flex-col">
+                        <div class="title text-start color-root-grey-light">
+                            <h3 class="font-semibold">{{ $post->name }}</h3>
+                            <p>Дата создания: {{ $post->created_at->format('M. j, Y h:m') }}</p>
+                            <div class="desc mb-40">
+                                <div class="title color-root-grey-light mt-5">
+                                    <h2>Описание</h2>
+                                </div>
+                                <div class="color-root-grey-light">
+                                    <p class="font-semibold">
+                                        {{ $post->description }}
+                                    </p>
+                                </div>
+                                <button
+                                    class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out">
+                                    Добавить в избранное
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div style="background-color: rgb(0, 0, 0, 0.4);" id="default-modal" tabindex="-1" aria-hidden="true"
-        class=" hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] h-screen">
-        <div class="relative p-4 w-1/2 max-w-9xl max-h-9xl">
-            <!-- Modal content -->
-            <div class="relative bg-white rounded-lg shadow">
-                <!-- Modal header -->
-                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
-                    <h3 class="text-xl font-semibold text-gray-900">
-                        Добавление постера
-                    </h3>
-                    <button type="button"
-                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
-                        data-modal-hide="default-modal">
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                        </svg>
-                        <span class="sr-only">Закрыт</span>
-                    </button>
-                </div>
+        <div class="p-6 text-gray-900 h-auto w-3/6">
+            <div class="flex justify-between items-start">
+                <section class="py-8 lg:py-16 w-screen">
+                    <div class="mx-auto">
+                        <div class="flex justify-between items-start mb-6">
+                            <h2 class="text-lg lg:text-2xl font-bold text-gray-900">Комментарии
+                                ({{ count($comments) }})
+                            </h2>
+                        </div>
+                        <form class="mb-6" method="POST" action="{{ route('newComment', ['id' => $post->id]) }}">
+                            @csrf
+                            <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200">
+                                <label for="comment" class="sr-only">Ваш комментарий</label>
+                                <textarea id="comment" rows="6" name="message"
+                                    class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none" placeholder="Ваш комментарий"
+                                    required></textarea>
+                            </div>
+                            <button type="submit"
+                                class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center border text-gray-500 bg-primary-900 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800">
+                                Опубликовать
+                            </button>
+                        </form>
+                        @foreach ($comments as $comment)
+                            <article class="p-6 mb-5 text-base bg-gray-200 rounded-lg">
+                                <footer class="flex justify-between items-center mb-2 w-max">
+                                    <div class="flex items-center">
+                                        <p class="inline-flex items-center mr-3 text-sm text-gray-900">
+                                            {{ $comment->user->name }}
+                                        </p>
+                                        <p class="text-sm text-gray-600"><time pubdate datetime="2022-02-08"
+                                                title="February 8th, 2022">{{ $comment->created_at->format('M. j, Y h:m') }}</time>
+                                        </p>
+                                    </div>
 
-                <!-- Modal body -->
-                <div class="p-4 md:p-5 space-y-4">
-                    <form class="max-w-md mx-auto" method="POST" action="{{ route('NewPoster') }}"
-                        enctype="multipart/form-data">
-                        @csrf
-                        <div class="relative z-0 w-full mb-5 group">
-                            <input type="text" name="name" id="name"
-                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                required />
-                            <label for="name"
-                                class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Название</label>
-                        </div>
-                        <div class="relative z-0 w-full mb-5 group">
-                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900">Описание</label>
-                            <textarea id="description" name="description" rows="4"
-                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Введите описание" required></textarea>
-                        </div>
-                        <div class="relative z-0 w-full mb-5 group">
-                            <label class="block mb-2 text-sm font-medium text-gray-900" for="photo">Выберите файл</label>
-                            <input
-                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
-                                aria-describedby="photo" name="photo" id="photo" type="file" required>
-                        </div>
-                        <button type="submit"
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Загрузить</button>
-                    </form>
-                </div>
+                                </footer>
+                                <p class="text-gray-500">{{ $comment->message }}</p>
+                            </article>
+                        @endforeach
+                    </div>
+                </section>
             </div>
         </div>
     </div>
