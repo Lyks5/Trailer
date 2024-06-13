@@ -2,7 +2,7 @@
     <div class="container mx-auto px-4 py-4 flex justify-between items-center">
         <div class="flex items-center">
             <a href="{{ route('welcome') }}">
-                <h1 class="text-orange-600 text-3xl font-bold">КИНОАФИША</h1>
+                <h1 class="text-black text-3xl font-bold">КИНОАФИША</h1>
             </a>
         </div>
         <nav class="flex-grow">
@@ -21,7 +21,7 @@
                 <button type="submit" class="text-black">🔍</button>
             </form>
             @if (Auth::user())
-                <a href="home" class="text-black">{{ Auth::user()->name }}</a>
+                <a href="{{ route('home') }}" class="text-black">{{ Auth::user()->name }}</a>
             @else
                 <a href="{{ route('register') }}">Вход</a>
             @endif
