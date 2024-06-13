@@ -35,8 +35,12 @@
                                         <div class="flex flex-wrap flex-col mb-2">
                                             @foreach ($like as $name)
                                                 @foreach ($name->poster as $item)
-                                                    <a href="{{ route('Post', ['post_id' => $item->id]) }}"
-                                                        class="text-primary hover:text-primary-dark transition duration-300 ease-in-out text-lg">{{ $item->name }}</a>
+                                                    <div class="flex align-center border p-5">
+                                                        <img src="{{ asset($item->image) }}" alt=""
+                                                            style="width: 75px">
+                                                        <a href="{{ route('Post', ['post_id' => $item->id]) }}"
+                                                            class="text-primary hover:text-primary-dark transition duration-300 ease-in-out text-lg">{{ $item->name }}</a>
+                                                    </div>
                                                 @endforeach
                                             @endforeach
                                         </div>
