@@ -16,3 +16,4 @@ Route::get('/admin/edit_poster/{post_id}', [App\Http\Controllers\AdminController
 Route::post('/admin/save_edit/{poster_id}', [App\Http\Controllers\AdminController::class, 'save_edit'])->name('save_posts')->middleware([IsAdmin::class]);
 Route::post('/search', [App\Http\Controllers\HomeController::class, 'search'])->name('Search');
 Route::post('/video/{id}/newComment', [App\Http\Controllers\HomeController::class, 'new_comment'])->name('newComment');
+Route::get('/liked/add/{product_id}', [App\Http\Controllers\HomeController::class, 'add_liked'])->name('ToLike')->middleware(['auth', 'verified']);

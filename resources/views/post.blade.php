@@ -14,15 +14,22 @@
                                 <div class="title color-root-grey-light mt-5">
                                     <h2>Описание</h2>
                                 </div>
-                                <div class="color-root-grey-light">
+                                <div class="color-root-grey-light mb-5">
                                     <p class="font-semibold">
                                         {{ $post->description }}
                                     </p>
                                 </div>
-                                <button
-                                    class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out">
-                                    Добавить в избранное
-                                </button>
+                                @if ($like)
+                                    <a href="{{ route('ToLike', ['product_id' => $post->id]) }}"
+                                        class="w-full md:w-[260px] px-4 py-1 rounded-xl border border-black border-dashed text-center">
+                                        В избранном
+                                    </a>
+                                @else
+                                    <a href="{{ route('ToLike', ['product_id' => $post->id]) }}"
+                                        class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out">Добавить
+                                        в избранное
+                                    </a>
+                                @endif
                             </div>
                         </div>
                     </div>

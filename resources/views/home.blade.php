@@ -31,16 +31,14 @@
                             <div class="md:w-full">
                                 <div class="bg-white shadow-md rounded px-4 py-3 mb-3">
                                     <h5 class="text-lg font-bold">Избранное</h5>
-                                    <div class="flex flex-wrap gap-2 mb-2">
-                                        <div>
-                                            <a href=""
-                                                class="text-primary hover:text-primary-dark transition duration-300 ease-in-out text-lg">name</a>
-                                        </div>
-                                    </div>
-                                    <div class="flex flex-wrap gap-2 mb-2">
-                                        <div>
-                                            <a href=""
-                                                class="text-primary hover:text-primary-dark transition duration-300 ease-in-out text-lg">name</a>
+                                    <div class="gap-2 mb-2">
+                                        <div class="flex flex-wrap flex-col mb-2">
+                                            @foreach ($like as $name)
+                                                @foreach ($name->poster as $item)
+                                                    <a href="{{ route('Post', ['post_id' => $item->id]) }}"
+                                                        class="text-primary hover:text-primary-dark transition duration-300 ease-in-out text-lg">{{ $item->name }}</a>
+                                                @endforeach
+                                            @endforeach
                                         </div>
                                     </div>
                                 </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Poster;
 use App\Models\Comment;
+use App\Models\Like;
 use Auth;
 
 class HomeController extends Controller
@@ -26,7 +27,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $like = Like::with('poster')->where('user_id', Auth::user()->id)->get();
+        return view('home', ['like' => $like]);
     }
     public function welcome()
     {
@@ -36,7 +38,8 @@ class HomeController extends Controller
     public function post($post_id)
     {
         $post = Poster::where('id', $post_id)->first();
-        return view('post', ['post' => $post, 'comments' => Comment::with(['post', 'user'])->where('poster_id', $post_id)->orderBy('created_at', 'DESC')->get()]);
+        $like = Like::where('user_id', Auth::user()->id)->where('poster_id', $post_id)->first();
+        return view('post', ['post' => $post, 'comments' => Comment::with(['post', 'user'])->where('poster_id', $post_id)->orderBy('created_at', 'DESC')->get(), 'like' => $like]);
     }
     public function search(Request $request)
     {
@@ -57,6 +60,22 @@ class HomeController extends Controller
             'poster_id' => $id,
             'message' => $request->message
         ]);
+        return redirect()->back();
+    }
+    public function add_liked($product_id)
+    {
+        // Добавление в избранное
+        $status = Like::where('user_id', Auth::user()->id)->where('poster_id', $product_id)->first();
+        if ($status) {
+            Like::where('id', $status->id)->delete();
+        }
+        else {
+            $data = [
+                'user_id' => Auth::user()->id,
+                'poster_id' => $product_id,
+            ];
+            Like::create($data);
+        }
         return redirect()->back();
     }
 }
