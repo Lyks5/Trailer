@@ -6,7 +6,9 @@
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
             @foreach ($posts as $post)
                 <div class="bg-white shadow rounded overflow-hidden">
-                    <img src="{{ asset($post->image) }}" alt="Movie" class="w-full h-70 object-cover">
+                <a href="{{ route('Post', ['post_id' => $post->id]) }}">
+                        <img src="{{ asset($post->image) }}" alt="Movie 1" class="w-full h-auto object-cover">
+                    </a>
                     <div class="p-4">
                         <h3 class="text-lg font-bold">{{ $post->name }}</h3>
                         <a href="{{ route('Post', ['post_id' => $post->id]) }}">Подробнее</a>

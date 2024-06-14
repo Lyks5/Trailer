@@ -5,7 +5,7 @@
         <div class="flex justify-between pt-20">
             <div class="product-main_info flex">
                 <div class="flex gap-5 h-full">
-                    <img src="{{ asset($post->image) }}" alt="Product Image" style="width: 20%">
+                    <img src="{{ asset($post->image) }}" alt="Product Image" style="width: full">
                     <div class="flex flex-col">
                         <div class="title text-start color-root-grey-light">
                             <h3 class="font-semibold">{{ $post->name }}</h3>

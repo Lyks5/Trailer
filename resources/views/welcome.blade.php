@@ -32,13 +32,13 @@
                 <button class="tns-next"></button>
             </div>
             <div class="my-slider h-full">
-                <div><img src="https://2022-god.com/wp-content/uploads/2021/08/dyuna-dune.jpeg" alt="Slide 1"
+                <div><img src="https://i0.wp.com/boardgametoday.com/wp-content/uploads/2021/01/Dune-House-Secrets.jpg?resize=1536%2C384&ssl=1" alt="Slide 1"
                         class="w-full h-96 object-cover"></div>
-                <div><img src="https://2022-god.com/wp-content/uploads/2021/08/dyuna-dune.jpeg" alt="Slide 2"
+                <div><img src="https://www.drcommodore.it/wp-content/uploads/2023/08/one-piece-poster-1536x384.jpg" alt="Slide 2"
                         class="w-full h-96 object-cover"></div>
-                <div><img src="https://2022-god.com/wp-content/uploads/2021/08/dyuna-dune.jpeg" alt="Slide 3"
+                <div><img src="https://absolutehiend.com/wp-content/uploads/2022/04/The-Audiophile-Man-Logo-1536x384.jpeg" alt="Slide 3"
                         class="w-full h-96 object-cover"></div>
-                <div><img src="https://2022-god.com/wp-content/uploads/2021/08/dyuna-dune.jpeg" alt="Slide 4"
+                <div><img src="https://mauifamilymagazine.com/wp-content/uploads/2024/02/background-1536x384.jpg" alt="Slide 4"
                         class="w-full h-96 object-cover"></div>
             </div>
         </div>
@@ -50,13 +50,17 @@
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
             <!-- Movie Card -->
             @foreach ($posts as $post)
+                
                 <div class="bg-white shadow rounded overflow-hidden">
-                    <img src="{{ asset($post->image) }}" alt="Movie 1" class="w-full h-70 object-cover">
+                    <a href="{{ route('Post', ['post_id' => $post->id]) }}">
+                        <img src="{{ asset($post->image) }}" alt="Movie 1" class="w-full h-auto object-cover">
+                    </a>
                     <div class="p-4">
                         <h3 class="text-lg font-bold">{{ $post->name }}</h3>
                         <a href="{{ route('Post', ['post_id' => $post->id]) }}">Подробнее</a>
                     </div>
                 </div>
+            </a>
             @endforeach
         </div>
     </div>

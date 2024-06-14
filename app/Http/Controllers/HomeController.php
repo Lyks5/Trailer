@@ -32,6 +32,7 @@ class HomeController extends Controller
     }
     public function welcome()
     {
+       
         $posts = Poster::where('visibility', 1)->limit(10)->get();
         return view('welcome', ['posts' => $posts]);
     }
@@ -48,7 +49,7 @@ class HomeController extends Controller
         return view('search', ['posts' => $results]);
     }
     public function see()
-    {
+    {  
         $posts = Poster::where('visibility', 1)->inRandomOrder()->limit(15)->get();
         return view('see', ['posts' => $posts]);
     }
