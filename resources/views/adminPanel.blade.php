@@ -29,6 +29,7 @@
             </div>
         </div>
     </div>
+    {{-- Модальное окно --}}
     <div style="background-color: rgb(0, 0, 0, 0.4);" id="default-modal" tabindex="-1" aria-hidden="true"
         class=" hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] h-screen">
         <div class="relative p-4 w-1/2 max-w-9xl max-h-9xl">

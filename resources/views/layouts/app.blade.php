@@ -12,6 +12,11 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     @vite('resources/css/app.css')
 </head>
+<style>
+    .menu {
+        min-height: calc(100vh - (68px + 152px))
+    }
+</style>
 
 <body>
     @include('components.header')

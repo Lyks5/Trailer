@@ -1,5 +1,5 @@
 <!-- Footer -->
-<footer class="bg-white py-6">
+<footer class="bg-white py-6 footer_fit">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 <div>

@@ -20,6 +20,10 @@
             padding: 10px;
             border-radius: 50%;
         }
+
+        .tns-outer button {
+            display: none;
+        }
     </style>
     <div class="container mx-auto my-6">
         <div class="relative">
@@ -27,7 +31,7 @@
                 <button class="tns-prev"></button>
                 <button class="tns-next"></button>
             </div>
-            <div class="my-slider">
+            <div class="my-slider h-full">
                 <div><img src="https://2022-god.com/wp-content/uploads/2021/08/dyuna-dune.jpeg" alt="Slide 1"
                         class="w-full h-96 object-cover"></div>
                 <div><img src="https://2022-god.com/wp-content/uploads/2021/08/dyuna-dune.jpeg" alt="Slide 2"
