@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('posters', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('description');
+            $table->text('description');
             $table->string('image');
             $table->boolean('visibility')->default(true);
             $table->timestamps();
