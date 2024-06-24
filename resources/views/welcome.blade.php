@@ -1,4 +1,8 @@
 @extends('layouts.app')
+@section('title')
+Главная страница
+@endsection
+
 
 @section('content')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/min/tiny-slider.js"></script>
