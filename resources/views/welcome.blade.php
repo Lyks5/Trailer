@@ -32,12 +32,12 @@
                 <button class="tns-next"></button>
             </div>
             <div class="my-slider h-full">
-                <div><img src="https://i0.wp.com/boardgametoday.com/wp-content/uploads/2021/01/Dune-House-Secrets.jpg?resize=1536%2C384&ssl=1" alt="Slide 1"
-                        class="w-full h-96 object-cover"></div>
-                <div><img src="https://www.drcommodore.it/wp-content/uploads/2023/08/one-piece-poster-1536x384.jpg" alt="Slide 2"
-                        class="w-full h-96 object-cover"></div>
-                <div><img src="https://absolutehiend.com/wp-content/uploads/2022/04/The-Audiophile-Man-Logo-1536x384.jpeg" alt="Slide 3"
-                        class="w-full h-96 object-cover"></div>
+                <div><a href="{{route('Post', ['post_id'=>9])}}"><img src="https://i0.wp.com/boardgametoday.com/wp-content/uploads/2021/01/Dune-House-Secrets.jpg?resize=1536%2C384&ssl=1" alt="Slide 1"
+                        class="w-full h-96 object-cover"></a></div>
+                <div><a href="{{route('Post', ['post_id'=>10])}}"><img src="https://www.drcommodore.it/wp-content/uploads/2023/08/one-piece-poster-1536x384.jpg" alt="Slide 2"
+                        class="w-full h-96 object-cover"></a></div>
+                <div><a href="{{route('Post', ['post_id'=>11])}}"><img src="https://s3.cine3.com/2021/05/streaming-vod-godzilla-kon-1536x384.jpg" alt="Slide 3"
+                        class="w-full h-96 object-cover"></a></div>
                 <div><img src="https://mauifamilymagazine.com/wp-content/uploads/2024/02/background-1536x384.jpg" alt="Slide 4"
                         class="w-full h-96 object-cover"></div>
             </div>
