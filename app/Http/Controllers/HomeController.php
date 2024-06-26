@@ -17,7 +17,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth');  
     }
 
     /**
@@ -31,8 +31,7 @@ class HomeController extends Controller
         return view('home', ['like' => $like]);
     }
     public function welcome()
-    {
-       
+    {  
         $posts = Poster::where('visibility', 1)->limit(10)->get();
         return view('welcome', ['posts' => $posts]);
     }

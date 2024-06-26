@@ -8,6 +8,15 @@
                     class="text-white bg-black hover:bg-slate-400 focus:ring-4 focus:ring-slate-600 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">
                     Добавить постер
                 </button>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
             </div>
             <div class="p-6 text-gray-900 grid w-auto grid-cols-5 gap-4 place-items-center">
                 @foreach ($posters as $post)

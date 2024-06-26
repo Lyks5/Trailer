@@ -57,7 +57,7 @@
                 
                 <div class="bg-white shadow rounded overflow-hidden">
                     <a href="{{ route('Post', ['post_id' => $post->id]) }}">
-                        <img src="{{ asset($post->image) }}" alt="Movie 1" class="w-full h-auto object-cover">
+                        <img src="{{ asset($post->image) }}" alt="Movie 1" class="w-full object-cover h-96">
                     </a>
                     <div class="p-4">
                         <h3 class="text-lg font-bold">{{ $post->name }}</h3>

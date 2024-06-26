@@ -27,8 +27,12 @@ class AdminController extends Controller
             'description' => $request->description,
             'image' => 'storage/' . $name,
         ];
-        Poster::create($info);
-        return redirect()->back();
+        $poster = Poster::firstOrCreate(['name' => $info['name']], $info);
+        if ($poster->wasRecentlyCreated) {
+            return redirect()->back();
+        } else {
+            return redirect()->back()->withErrors(['error' => 'Такой постер уже существует']);
+        }
     }
     public function delete_post($post_id)
     {
