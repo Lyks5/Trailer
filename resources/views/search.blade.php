@@ -7,7 +7,9 @@
             @if (count($posts))
                 @foreach ($posts as $post)
                     <div class="bg-white shadow rounded overflow-hidden">
-                        <img src="{{ asset($post->image) }}" alt="Movie" class="w-full h-70 object-cover">
+                    <a href="{{ route('Post', ['post_id' => $post->id]) }}">
+                        <img src="{{ asset($post->image) }}" alt="Movie 1" class="w-full object-cover h-96">
+                    </a>
                         <div class="p-4">
                             <h3 class="text-lg font-bold">{{ $post->name }}</h3>
                             <a href="{{ route('Post', ['post_id' => $post->id]) }}">Подробнее</a>

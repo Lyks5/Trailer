@@ -42,8 +42,6 @@
                         class="w-full h-96 object-cover"></a></div>
                 <div><a href="{{route('Post', ['post_id'=>11])}}"><img src="https://s3.cine3.com/2021/05/streaming-vod-godzilla-kon-1536x384.jpg" alt="Slide 3"
                         class="w-full h-96 object-cover"></a></div>
-                <div><img src="https://mauifamilymagazine.com/wp-content/uploads/2024/02/background-1536x384.jpg" alt="Slide 4"
-                        class="w-full h-96 object-cover"></div>
             </div>
         </div>
     </div>
