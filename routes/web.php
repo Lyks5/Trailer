@@ -23,3 +23,5 @@ Route::post('/video/{id}/newComment', [App\Http\Controllers\HomeController::clas
 
 
 Route::get('/liked/add/{product_id}', [App\Http\Controllers\HomeController::class, 'add_liked'])->name('ToLike')->middleware(['auth', 'verified']);
+Route::get('login/yandex', [AuthenticatedSessionController::class, 'yandex'])->name('yandex');
+Route::get('login/yandex/redirect', [AuthenticatedSessionController::class, 'yandexRedirect'])->name('yandexRedirect');

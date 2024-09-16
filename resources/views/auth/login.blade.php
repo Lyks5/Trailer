@@ -12,6 +12,12 @@
                     почты и пароль, чтобы настроить и продать свой магазин!</p>
                 <div class="px-4 py-2 mt-6 text-black bg-white rounded w-1/2"><a
                         href="{{ route('register') }}"><button>Зарегестрироваться</button></a></div>
+                        <form action="{{ route('yandex') }}">
+            <button type="submit"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            Войти через Yandex
+                        </button>
+            </form>  
             </div>
             <form method="POST" action="{{ route('login') }}" class="content-center flex items-center mx-auto my-0">
                 @csrf
@@ -47,8 +53,10 @@
                             Войти
                         </button>
                     </div>
+                    
                 </div>
             </form>
+            
         </div>
     </div>
 @endsection
