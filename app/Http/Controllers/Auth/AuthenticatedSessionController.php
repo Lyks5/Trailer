@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthenticatedSessionController extends Controller
 {
-    use Laravel\Socialite\Facades\Socialite;
-    use Str;   
+    // use Laravel\Socialite\Facades\Socialite;
+    // use Str;   
 
    public function yandex() // перенаправляем юзера на яндекс Auth
     {

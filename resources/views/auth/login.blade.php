@@ -11,10 +11,10 @@
                 <p class="mt-4">Вы можете войти в систему, используя свою учетную запись администратора, адрес электронной
                     почты и пароль, чтобы настроить и продать свой магазин!</p>
                 <div class="px-4 py-2 mt-6 text-black bg-white rounded w-1/2"><a
-                        href="{{ route('register') }}"><button>Зарегестрироваться</button></a></div>
+                        href="{{ route('register') }}"><button >Зарегестрироваться</button></a></div>
                         <form action="{{ route('yandex') }}">
             <button type="submit"
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            class="my-1.5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                             Войти через Yandex
                         </button>
             </form>  
