@@ -6,10 +6,10 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'welcome'])->name('welcome');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware(['auth'])->name('home');
 Route::get('/see/what', [App\Http\Controllers\HomeController::class, 'see'])->name('see');
 
-Route::get('/post/{post_id}', [App\Http\Controllers\HomeController::class, 'post'])->name('Post');
+Route::get('/post/{post_id}', [App\Http\Controllers\HomeController::class, 'post'])->middleware(['auth'])->name('Post');
 
 Route::get('/post/delete/{post_id}', [App\Http\Controllers\AdminController::class, 'delete_post'])->name('DeletePost')->middleware([IsAdmin::class]);
 Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin')->middleware([IsAdmin::class]);
