@@ -8,8 +8,7 @@
         <div class="flex w-4/5 max-w-4xl h-96 shadow-lg">
             <div class="flex flex-col justify-center w-1/2 p-10 bg-black text-white">
                 <h1 class="text-4xl font-bold">Киноафиша</h1>
-                <p class="mt-4">Вы можете войти в систему, используя свою учетную запись администратора, адрес электронной
-                    почты и пароль, чтобы настроить и продать свой магазин!</p>
+                <p class="mt-4">Приглашаем вас на премьеру нового фильма, который изменит ваше представление о кино.</p>
                 <div class="px-4 py-2 mt-6 text-black bg-white rounded w-1/2"><a
                         href="{{ route('register') }}"><button >Зарегестрироваться</button></a></div>
                         <form action="{{ route('yandex') }}">
