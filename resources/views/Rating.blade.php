@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-8">
-    <h2 class="text-2xl font-bold mb-4">Не знаете что посмотреть?</h2>
+    <h2 class="text-2xl font-bold mb-4"> популярных фильмов</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
         @foreach ($posts as $post)
             <div class="bg-white shadow rounded overflow-hidden">

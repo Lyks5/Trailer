@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('image');
             $table->boolean('visibility')->default(true);
+            $table->integer('views')->default(0);
             $table->timestamps();
         });
     }

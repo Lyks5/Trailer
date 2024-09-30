@@ -8,6 +8,7 @@ Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'welcome'])->name('welcome');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware(['auth'])->name('home');
 Route::get('/see/what', [App\Http\Controllers\HomeController::class, 'see'])->name('see');
+Route::get('/rating', [App\Http\Controllers\HomeController::class, 'rating'])->name('rating');
 
 Route::get('/post/{post_id}', [App\Http\Controllers\HomeController::class, 'post'])->middleware(['auth'])->name('Post');
 

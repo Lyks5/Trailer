@@ -18,4 +18,8 @@ class Poster extends Model
     public function commetns() {
         return $this->hasMany(Comment::class);
     }
+    public function views()
+    {
+        return $this->hasMany(View::class);
+    }
 }

@@ -6,61 +6,141 @@ use Illuminate\Http\Request;
 use App\Models\Poster;
 use App\Models\Comment;
 use App\Models\Like;
+use App\Models\View;
 use Auth;
 
 class HomeController extends Controller
 {
+    // Личный кабинет
     public function index()
     {
         $like = Like::with('poster')->where('user_id', Auth::user()->id)->get();
-        return view('home', ['like' => $like]);
+        return view('home', ['like' => $like]); 
     }
+
+// Показ главной страницы
     public function welcome()
     {  
         $posts = Poster::where('visibility', 1)->limit(10)->get();
         return view('welcome', ['posts' => $posts]);
     }
+
+
+
     public function post($post_id)
     {
-        $post = Poster::where('id', $post_id)->first();
+        // Получаем постер по ID
+        $poster = Poster::findOrFail($post_id);
+        
+        // Получаем уникальный идентификатор пользователя (ID или IP-адрес)
+        $userId = Auth::check() ? Auth::user()->id : request()->ip(); 
+    
+        // Проверяем, был ли уже просмотр
+        if (!View::where('poster_id', $poster->id)->where('user_id', $userId)->exists()) {
+            // Добавляем новый просмотр
+            View::create([
+                'poster_id' => $poster->id,
+                'user_id' => $userId,
+            ]);
+    
+            // Увеличиваем счётчик просмотров
+            $poster->increment('views');
+        }
+    
+        // Получаем лайк пользователя для данного постера
         $like = Like::where('user_id', Auth::user()->id)->where('poster_id', $post_id)->first();
-        return view('post', ['post' => $post, 'comments' => Comment::with(['post', 'user'])->where('poster_id', $post_id)->orderBy('created_at', 'DESC')->get(), 'like' => $like]);
-    }
-    public function search(Request $request)
-    {
-        $word = $request->word;
-        $results = Poster::where('name', 'like', "%{$word}%")->orWhere('description', 'like', "%{$word}%")->orderBy('id')->get();
-        return view('search', ['posts' => $results]);
-    }
-    public function see()
-    {  
-        $posts = Poster::where('visibility', 1)->inRandomOrder()->limit(15)->get();
-        return view('see', ['posts' => $posts]);
+    
+        // Возвращаем представление с данными постера и комментариями
+        return view('post', [
+            'post' => $poster, // Используем уже полученный объект $poster
+            //Модель коммент получает из моделей пост и юзер их id, фильтрует (orderBy) от новых к старым
+            'comments' => Comment::with(['post', 'user'])->where('poster_id', $post_id)->orderBy('created_at', 'DESC')->get(), 
+
+            'like' => $like,
+        ]);
     }
 
-    public function new_comment($id, Request $request)
-    {
-        Comment::create([
+
+
+ // Поиск
+public function search(Request $request)
+{
+    // Получаем слово для поиска из запроса
+    $word = $request->word;
+
+    // Ищем постеры, где имя или описание содержит слово
+    // Результаты сортируются по ID в порядке возрастания
+    $results = Poster::where('name', 'like', "%{$word}%")
+        ->orWhere('description', 'like', "%{$word}%")
+        ->orderBy('id')
+        ->get();
+
+    // Возвращаем представление 'search' с найденными постерами
+    return view('search', ['posts' => $results]);
+}
+
+// Страница Что посмотреть
+public function see()
+{  
+    // Получаем 15 случайных постеров, которые видимы (visibility = 1)
+    // Это позволяет пользователю увидеть случайные доступные постеры
+    $posts = Poster::where('visibility', 1)
+        ->inRandomOrder()
+        ->limit(15)
+        ->get();
+
+    // Возвращаем представление 'see' с полученными постерами
+    return view('see', ['posts' => $posts]);
+}
+
+// Страница Рейтинг
+public function rating()
+{  
+    // Получаем 10 случайных постеров, которые видимы (visibility = 1)
+    // Это позволяет пользователю увидеть случайные доступные постеры для рейтинга
+    $posts = Poster::where('visibility', 1)
+        ->inRandomOrder()
+        ->limit(10)
+        ->get();
+
+
+    return view('rating', ['posts' => $posts]);
+}
+
+// Добавление нового комментария
+public function new_comment($id, Request $request)
+{
+    // Создаем новый комментарий с ID пользователя, ID постера и текстом сообщения
+    Comment::create([
+        'user_id' => Auth::user()->id, // Получаем ID текущего аутентифицированного пользователя
+        'poster_id' => $id,             // ID постера, к которому добавляется комментарий
+        'message' => $request->message  // Сообщение из инпута
+    ]);
+
+    
+    return redirect()->back();
+}
+
+// Добавление в избранное (лайк)
+public function add_liked($product_id)
+{
+    // Проверяем, добавлен ли в избранное от текущего пользователя к данному постеру
+    $status = Like::where('user_id', Auth::user()->id)
+                  ->where('poster_id', $product_id)
+                  ->first();
+
+    if ($status) {
+        // Если в избранном уже существует, удаляем его
+        Like::where('id', $status->id)->delete();
+    } else {
+        // Если в избранном нет, добавляем в избранное с ID пользователя и постера
+        $data = [
             'user_id' => Auth::user()->id,
-            'poster_id' => $id,
-            'message' => $request->message
-        ]);
-        return redirect()->back();
+            'poster_id' => $product_id,
+        ];
+        Like::create($data);
     }
-    public function add_liked($product_id)
-    {
-        // Добавление в избранное
-        $status = Like::where('user_id', Auth::user()->id)->where('poster_id', $product_id)->first();
-        if ($status) {
-            Like::where('id', $status->id)->delete();
-        }
-        else {
-            $data = [
-                'user_id' => Auth::user()->id,
-                'poster_id' => $product_id,
-            ];
-            Like::create($data);
-        }
-        return redirect()->back();
-    }
+
+    return redirect()->back();
+}
 }
