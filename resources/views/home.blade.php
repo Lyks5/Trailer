@@ -38,7 +38,7 @@
                                         @foreach ($like as $name)
                                             @foreach ($name->poster as $item)
                                                 <div class="flex align-center border p-5">
-                                                    <img src="{{ asset($item->image) }}" alt="" style="width: 75px">
+                                                    <img src="{{ asset($item->image) }}" alt="{{ $item->name }}">
                                                     <a href="{{ route('Post', ['post_id' => $item->id]) }}"
                                                         class="text-primary hover:text-primary-dark transition duration-300 ease-in-out text-lg">{{ $item->name }}</a>
                                                 </div>
