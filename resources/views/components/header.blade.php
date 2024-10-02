@@ -3,10 +3,10 @@
     <div class="container mx-auto px-4 py-4 flex sm:justify-center md:justify-between items-center max-w-screen-xl">
         <div class="flex sm: items-center">
             <a href="{{ route('welcome') }}">
-                <h1 class="text-black text-3xl sm:justify-center font-bold">КИНОАФИША</h1>
+                <h1 class=" xs:hidden text-black text-3xl sm:justify-center font-bold">КИНОАФИША</h1>
             </a>
         </div>
-        <nav class="sm:hidden md:flex flex-grow justify-center space-x-8">
+        <nav class="xs:hidden md:flex flex-grow justify-center space-x-8">
             <ul class="flex space-x-8">
                 <li><a href="/" class="text-black">Афиша</a></li>
                 <li><a href="{{ route('see') }}" class="text-black">Что посмотреть</a></li>
@@ -16,7 +16,7 @@
                 @endif
             </ul>
         </nav>
-        <div class="sm:hidden md:flex items-center space-x-4">
+        <div class="xs:hidden md:flex items-center space-x-4">
             <form action="{{ route('Search') }}" method="POST">
                 @csrf
                 <input type="text" name="word" placeholder="Поиск" class="border rounded px-3 py-1">
@@ -31,7 +31,7 @@
     </div>
 
 
-    <div class="md:hidden container mx-auto px-4 py-4 flex flex-col items-center max-w-screen-xl">
+    <div class=" fixed bg-white top-0 left-0 md:hidden container mx-auto px-4 py-4 flex flex-col items-center max-w-screen-xl">
         <nav class="grid grid-cols-5 gap-10" id="nav-links">
             <a href="/" class="flex flex-col items-center">
                 <img class="w-16" src="{{ asset('sait/afisha.svg') }}" alt="Афиша">

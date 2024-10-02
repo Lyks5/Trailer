@@ -7,6 +7,7 @@ use App\models\Poster;
 
 class AdminController extends Controller
 {
+    // создание поста
     public function index()
     {
         $posters = Poster::orderBy('created_at', 'DESC')->get();
@@ -34,16 +35,43 @@ class AdminController extends Controller
             return redirect()->back()->withErrors(['error' => 'Такой постер уже существует']);
         }
     }
-    public function delete_post($post_id)
+    // Функция скрытия 
+    public function hide($id)
     {
-        Poster::where('id', $post_id)->delete();
+        $post = Poster::find($id);
+
+        if (!$post) {
+            return response()->json(['message' => 'Item not found'], 404);
+        }
+
+        // Устанавливаем visibility в 0
+        $post->visibility = 0;
+        $post->save();
+
         return redirect()->back();
     }
+    // Функция востановления
+    public function restore($id)
+{
+    $post = Poster::find($id);
+
+    if (!$post) {
+        return response()->json(['message' => 'Item not found'], 404);
+    }
+
+    // Устанавливаем visibility в 1
+    $post->visibility = 1;
+    $post->save();
+
+    return redirect()->back();
+}
+    // Редактирование поста
     public function edit_poster($post_id)
     {
         $poster = Poster::where('id', $post_id)->first();
         return view('editPost', ['poster' => $poster]);
     }
+    // Сохранение изменений
     public function save_edit($poster_id, Request $request)
     {
         $request->validate([
