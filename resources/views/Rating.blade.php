@@ -2,16 +2,17 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-8">
-    <h2 class="text-2xl font-bold mb-4"> популярных фильмов</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+    <h2 class="text-2xl font-bold mb-4"> Рейтинг фильмов</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         @foreach ($posts as $post)
-            <div class="bg-white shadow rounded overflow-hidden">
+            <div class="bg-white shadow-lg rounded-lg overflow-hidden transform transition-transform hover:scale-105">
                 <a href="{{ route('Post', ['post_id' => $post->id]) }}">
-                    <img src="{{ asset($post->image) }}" alt="Movie 1" class="w-full h-auto object-cover">
+                    <img src="{{ asset($post->image) }}" alt="Movie 1" class="w-full h-96 object-cover">
                 </a>
                 <div class="p-4">
-                    <h3 class="text-lg font-bold">{{ $post->name }}</h3>
-                    <a href="{{ route('Post', ['post_id' => $post->id]) }}">Подробнее</a>
+                    <h3 class="text-lg font-bold mb-2">{{ $post->name }}</h3>
+                    <a href="{{ route('Post', ['post_id' => $post->id]) }}"
+                        class="text-blue-500 hover:underline">Подробнее</a>
                 </div>
             </div>
         @endforeach

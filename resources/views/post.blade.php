@@ -11,8 +11,8 @@
                         <h3 class="font-semibold">{{ $post->name }}</h3>
                         <p>Дата создания: {{ $post->created_at->format('M. j, Y h:m') }}</p>
                         <p>Просмотры: {{ $post->views }}</p>
-                        <div class="desc mb-40">
-                            <div class="title color-root-grey-light mt-5">
+                        <div class="desc mb-40 w-2/3">
+                            <div class="title color-root-grey-light mt-5 ">
                                 <h2>Описание</h2>
                             </div>
                             <div class="color-root-grey-light mb-5">

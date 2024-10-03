@@ -18,29 +18,32 @@
                 </div>
             @endif
         </div>
-        <div class="p-6 text-gray-900 grid w-auto grid-cols-5 gap-4 place-items-center">
-    @foreach ($posters as $post)
-        <div class="bg-white shadow rounded overflow-hidden w-min">
-            <img src="{{ asset($post->image) }}" alt="Movie 1" class="w-full h-70 object-cover">
-            <div class="p-4">
-                <h3 class="text-lg font-bold">{{ $post->name }}</h3>
-                <a href="{{ route('Post', ['post_id' => $post->id]) }}">Подробнее</a>
-                <div class="flex justify-between gap-3 pt-3">
-                    @if ($post->visibility == 1)
-                        <a href="{{ route('posthide', $post->id) }}" type="button"
-                            class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center me-2 mb-2">Скрыть</a>
-                    @else
-                        <a href="{{ route('postrestore', $post->id) }}" type="button"
-                            class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center me-2 mb-2">Восстановить</a>
-                    @endif
-                    <a href="{{ route('editPosts', ['post_id' => $post->id]) }}" type="button"
-                        data-modal-target="edit-modal" data-modal-toggle="edit-modal"
-                        class="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center me-2 mb-2">Редактировать</a>
+        <div class="p-6 text-gray-900 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 place-items-center"
+            style="min-height: 100vh;">
+            @foreach ($posters as $post)
+                <div
+                    class="bg-white shadow-lg rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl w-64 h-96 relative {{ $post->visibility == 0 ? 'border-4 border-red-500' : '' }}">
+                    <img src="{{ asset($post->image) }}" alt="Movie 1" class="w-full h-64 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-lg font-bold">{{ $post->name }}</h3>
+                        <a href="{{ route('Post', ['post_id' => $post->id]) }}"
+                            class="text-blue-500 hover:underline">Подробнее</a>
+                        <div class="flex justify-between gap-3 pt-3">
+                            @if ($post->visibility == 1)
+                                <a href="{{ route('posthide', $post->id) }}" type="button"
+                                    class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center me-2 mb-2">Скрыть</a>
+                            @else
+                                <a href="{{ route('postrestore', $post->id) }}" type="button"
+                                    class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center me-2 mb-2">Восстановить</a>
+                            @endif
+                            <a href="{{ route('editPosts', ['post_id' => $post->id]) }}" type="button"
+                                data-modal-target="edit-modal" data-modal-toggle="edit-modal"
+                                class="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center me-2 mb-2">Редактировать</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            @endforeach
         </div>
-    @endforeach
-</div>
     </div>
 </div>
 {{-- Модальное окно --}}

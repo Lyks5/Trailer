@@ -3,7 +3,7 @@
     <div class="container mx-auto px-4 py-4 flex sm:justify-center md:justify-between items-center max-w-screen-xl">
         <div class="flex sm: items-center">
             <a href="{{ route('welcome') }}">
-                <h1 class=" xs:hidden text-black text-3xl sm:justify-center font-bold">КИНОАФИША</h1>
+                <h1 class="  text-black text-3xl sm:justify-center font-bold">КИНОАФИША</h1>
             </a>
         </div>
         <nav class="xs:hidden md:flex flex-grow justify-center space-x-8">

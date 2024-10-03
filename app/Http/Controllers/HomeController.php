@@ -96,13 +96,11 @@ public function see()
 // Страница Рейтинг
 public function rating()
 {  
-    // Получаем 10 случайных постеров, которые видимы (visibility = 1)
-    // Это позволяет пользователю увидеть случайные доступные постеры для рейтинга
+    // Получаем 10 постеров, отсортированных по количеству просмотров в порядке убывания
     $posts = Poster::where('visibility', 1)
-        ->inRandomOrder()
+        ->orderBy('views', 'desc')
         ->limit(10)
         ->get();
-
 
     return view('rating', ['posts' => $posts]);
 }
