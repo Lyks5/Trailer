@@ -7,6 +7,7 @@ use App\Models\Poster;
 use App\Models\Comment;
 use App\Models\Like;
 use App\Models\View;
+use App\Models\Genre;
 use Auth;
 
 class HomeController extends Controller
@@ -81,33 +82,28 @@ class HomeController extends Controller
 
     // Страница Что посмотреть
     public function see(Request $request)
-{
-    // Предопределенный список жанров
-    $genres = ['Боевик', 'Комедия', 'Драма', 'Криминал', 'Мюзикл', 'Приключения', 'Фантастика', 'Фэнтези', 'Триллер', 'Ужасы'];
+    {
+        // Получаем все жанры
+        $genres = Genre::pluck('name')->unique()->values()->all();
 
-    // Получаем параметр жанра из запроса
-    $genre = $request->input('genre');
+        // Получаем параметр жанра из запроса
+        $genre = $request->input('genre');
 
-    // Если жанр указан, фильтруем по нему, иначе выбираем случайные постеры
-    if ($genre) {
-        $posts = Poster::where('visibility', 1)
-            ->where('genre', $genre)
-            ->inRandomOrder()
-            ->limit(15)
-            ->get();
-    } else {
-        $posts = Poster::where('visibility', 1)
-            ->inRandomOrder()
-            ->limit(15)
-            ->get();
+        // Если жанр указан, фильтруем по нему, иначе выбираем случайные постеры
+        if ($genre) {
+            $posts = Poster::whereHas('genres', function ($query) use ($genre) {
+                $query->where('name', $genre);
+            })->inRandomOrder()->limit(15)->get();
+        } else {
+            $posts = Poster::inRandomOrder()->limit(15)->get();
+        }
+
+        // Возвращаем представление 'see' с полученными постерами и жанрами
+        return view('see', [
+            'posts' => $posts,
+            'genres' => $genres,
+        ]);
     }
-
-    // Возвращаем представление 'see' с полученными постерами и жанрами
-    return view('see', [
-        'posts' => $posts,
-        'genres' => $genres,
-    ]);
-}
 
     // Страница Рейтинг
     public function rating()

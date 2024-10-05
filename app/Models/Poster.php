@@ -22,4 +22,8 @@ class Poster extends Model
     {
         return $this->hasMany(View::class);
     }
+    public function genres()
+    {
+        return $this->belongsToMany(Genre::class);
+    }
 }

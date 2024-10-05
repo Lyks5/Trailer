@@ -1,7 +1,5 @@
 <!-- Header -->
 <header class="bg-white shadow">
-    <script src="{{ asset('js/app.js') }}" defer></script>
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <div class="container mx-auto px-4 py-4 flex sm:justify-center md:justify-between items-center max-w-screen-xl">
         <div class="flex sm: items-center">
             <a href="{{ route('welcome') }}">
