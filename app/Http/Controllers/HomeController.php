@@ -80,18 +80,34 @@ class HomeController extends Controller
     }
 
     // Страница Что посмотреть
-    public function see()
-    {
-        // Получаем 15 случайных постеров, которые видимы (visibility = 1)
-        // Это позволяет пользователю увидеть случайные доступные постеры
+    public function see(Request $request)
+{
+    // Предопределенный список жанров
+    $genres = ['Боевик', 'Комедия', 'Драма', 'Криминал', 'Мюзикл', 'Приключения', 'Фантастика', 'Фэнтези', 'Триллер', 'Ужасы'];
+
+    // Получаем параметр жанра из запроса
+    $genre = $request->input('genre');
+
+    // Если жанр указан, фильтруем по нему, иначе выбираем случайные постеры
+    if ($genre) {
+        $posts = Poster::where('visibility', 1)
+            ->where('genre', $genre)
+            ->inRandomOrder()
+            ->limit(15)
+            ->get();
+    } else {
         $posts = Poster::where('visibility', 1)
             ->inRandomOrder()
             ->limit(15)
             ->get();
-
-        // Возвращаем представление 'see' с полученными постерами
-        return view('see', ['posts' => $posts]);
     }
+
+    // Возвращаем представление 'see' с полученными постерами и жанрами
+    return view('see', [
+        'posts' => $posts,
+        'genres' => $genres,
+    ]);
+}
 
     // Страница Рейтинг
     public function rating()

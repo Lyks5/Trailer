@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('name')->unique();
             $table->text('description');
             $table->string('image');
-            $table->string(column: 'genre');
+            $table->text(column: 'genre');
             $table->boolean('visibility')->default(true);
             $table->integer('views')->default(0);
             $table->timestamps();
