@@ -17,7 +17,7 @@
                             <ul class="list-disc pl-5">
                                 <li>Жанр:
                                     @foreach ($post->genres as $genre)
-                                        {{ $genre->name }},
+                                        {{ $genre->name }}@if (!$loop->last), @endif
 
                                     @endforeach
                                 </li>
