@@ -11,6 +11,11 @@
                 </a>
                 <div class="p-4">
                     <h3 class="text-lg font-bold mb-2">{{ $post->name }}</h3>
+                    <div class="text-sm text-gray-500 mb-2">
+                        @foreach ($post->genres as $genre)
+                            {{ $genre->name }}@if (!$loop->last), @endif
+                        @endforeach
+                    </div>
                     <a href="{{ route('Post', ['post_id' => $post->id]) }}"
                         class="text-blue-500 hover:underline">Подробнее</a>
                 </div>

@@ -26,6 +26,7 @@
                     <img src="{{ asset($post->image) }}" alt="Movie 1" class="w-full min-h-96 max-h-96 object-cover">
                     <div class="p-4 min-h-56 relative">
                         <h3 class="font-bold ">{{ $post->name }}</h3>
+                        
                         <a href="{{ route('Post', ['post_id' => $post->id]) }}"
                             class="text-blue-500 hover:underline">Подробнее</a>
                         <div class="flex justify-center w-full gap-3 pt-3 absolute bottom-5 left-0">
@@ -92,6 +93,15 @@
                         <input
                             class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
                             aria-describedby="photo" name="photo" id="photo" type="file" required>
+                    </div>
+                    <div class="relative z-0 w-full mb-5 group">
+                        <label for="genres" class="block mb-2 text-sm font-medium text-gray-900">Жанры</label>
+                        <select name="genres[]" id="genres" multiple required
+                            class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500">
+                            @foreach ($genres as $genre)
+                                <option value="{{ $genre->id }}">{{ $genre->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <button type="submit"
                         class="text-white bg-black hover:bg-slate-400 focus:ring-4 focus:outline-none focus:ring-slate-200 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Загрузить</button>

@@ -22,7 +22,7 @@ class HomeController extends Controller
     // Показ главной страницы
     public function welcome()
     {
-        $posts = Poster::where('visibility', 1)->limit(10)->get();
+        $posts = Poster::where('visibility', 1)->get();
         return view('welcome', ['posts' => $posts]);
     }
 
@@ -30,8 +30,9 @@ class HomeController extends Controller
 
     public function post($post_id)
     {
+        $poster = Poster::with('genres')->findOrFail($post_id); 
         // Получаем постер по ID
-        $poster = Poster::findOrFail($post_id);
+      
 
         // Получаем уникальный идентификатор пользователя (ID или IP-адрес)
         $userId = Auth::check() ? Auth::user()->id : request()->ip();

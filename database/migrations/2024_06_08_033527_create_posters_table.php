@@ -15,7 +15,6 @@ return new class extends Migration {
             $table->string('name');
             $table->text('description');
             $table->string('image');
-            $table->text(column: 'genre')->nullable();
             $table->boolean('visibility')->default(true);
             $table->integer('views')->default(0);
             $table->timestamps();

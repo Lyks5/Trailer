@@ -11,7 +11,18 @@
                         <h3 class="font-semibold">{{ $post->name }}</h3>
                         <p>Дата создания: {{ $post->created_at->format('M. j, Y h:m') }}</p>
                         <p>Просмотры: {{ $post->views }}</p>
-                        <p>Жанр: {{ $post->genre }}</p>
+                        @if ($post->genres->isEmpty())
+                            <p>Жанр не указан.</p>
+                        @else
+                            <ul class="list-disc pl-5">
+                                <li>Жанр:
+                                    @foreach ($post->genres as $genre)
+                                        {{ $genre->name }},
+
+                                    @endforeach
+                                </li>
+                            </ul>
+                        @endif
                         <div class="desc mb-40 w-2/3">
                             <div class="title color-root-grey-light mt-5 ">
                                 <h2>Описание</h2>

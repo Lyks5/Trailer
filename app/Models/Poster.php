@@ -14,7 +14,7 @@ class Poster extends Model
         'image',
         'visibility'
     ];
-
+    
     public function commetns() {
         return $this->hasMany(Comment::class);
     }
