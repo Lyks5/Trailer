@@ -30,9 +30,9 @@ class HomeController extends Controller
 
     public function post($post_id)
     {
-        $poster = Poster::with('genres')->findOrFail($post_id); 
+        $poster = Poster::with('genres')->findOrFail($post_id);
         // Получаем постер по ID
-      
+
 
         // Получаем уникальный идентификатор пользователя (ID или IP-адрес)
         $userId = Auth::check() ? Auth::user()->id : request()->ip();
@@ -51,6 +51,7 @@ class HomeController extends Controller
 
         // Получаем лайк пользователя для данного постера
         $like = Like::where('user_id', Auth::user()->id)->where('poster_id', $post_id)->first();
+
 
         // Возвращаем представление с данными постера и комментариями
         return view('post', [

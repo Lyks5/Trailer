@@ -11,7 +11,8 @@ Route::get('/see/what', [App\Http\Controllers\HomeController::class, 'see'])->na
 Route::get('/rating', [App\Http\Controllers\HomeController::class, 'rating'])->name('rating');
 
 Route::get('/post/{post_id}', [App\Http\Controllers\HomeController::class, 'post'])->middleware(['auth'])->name('Post');
-
+Route::post('/rate/{post_id}', [App\Http\Controllers\RatingController::class, 'store'])->middleware(['auth'])->name('rate');
+Route::get('/post/{post_id}/ratings', [App\Http\Controllers\RatingController::class, 'show'])->name('post.ratings');
 
 Route::get('/post/post/{post_id}/hide', [App\Http\Controllers\AdminController::class, 'hide'])->name('posthide')->middleware([IsAdmin::class]);
 Route::get('/post/restore/{id}', [App\Http\Controllers\AdminController::class, 'restore'])->name('postrestore');

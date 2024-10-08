@@ -26,4 +26,8 @@ class Poster extends Model
     {
         return $this->belongsToMany(Genre::class);
     }
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
 }
