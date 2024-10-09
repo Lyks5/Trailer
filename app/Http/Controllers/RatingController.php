@@ -14,14 +14,28 @@ class RatingController extends Controller
         $request->validate([
             'rank' => 'required|integer|min:1|max:10', // Измените здесь на rank
         ]);
-
-        $rating = Rating::updateOrCreate(
-            ['user_id' => Auth::id(), 'poster_id' => $poster_id],
-            ['rating' => $request->rank] // Измените здесь на rank
-        );
+        $rating = Rating::where('user_id', Auth::id())->where('poster_id', $poster_id)->first();
+        if (!$rating) {
+            Rating::create([
+                'user_id' => Auth::id(),
+                'poster_id' => $poster_id,
+                'rank' => $request->rank
+            ]);
+        } else {
+            Rating::where('user_id', Auth::id())->where('poster_id', $poster_id)->update([
+                'rank' => $request->rank
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Ваша оценка сохранена.');
     }
+    // $rating = Rating::updateOrCreate(
+    //     [
+    //         'user_id' => Auth::id(),
+    //         'poster_id' => $poster_id,
+    //         'rank' => $request->rank
+    //     ]
+    // );
 
     public function show($poster_id)
     {

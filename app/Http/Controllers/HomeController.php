@@ -8,6 +8,7 @@ use App\Models\Comment;
 use App\Models\Like;
 use App\Models\View;
 use App\Models\Genre;
+use App\Models\Rating;
 use Auth;
 
 class HomeController extends Controller
@@ -52,13 +53,18 @@ class HomeController extends Controller
         // Получаем лайк пользователя для данного постера
         $like = Like::where('user_id', Auth::user()->id)->where('poster_id', $post_id)->first();
 
+        $userRating = $this->getUserRating($post_id); // Получаем текущую оценку пользователя
+        $ratings = $poster->ratings()->with('user')->get();
+        $averageRating = $poster->ratings()->avg('rank');
 
         // Возвращаем представление с данными постера и комментариями
         return view('post', [
             'post' => $poster, // Используем уже полученный объект $poster
             //Модель коммент получает из моделей пост и юзер их id, фильтрует (orderBy) от новых к старым
             'comments' => Comment::with(['post', 'user'])->where('poster_id', $post_id)->orderBy('created_at', 'DESC')->get(),
-
+            'userRating' => $userRating,
+            'ratings' => $ratings,
+            'averageRating' => $averageRating,
             'like' => $like,
         ]);
     }
@@ -108,16 +114,27 @@ class HomeController extends Controller
     }
 
     // Страница Рейтинг
-    public function rating()
-    {
-        // Получаем 10 постеров, отсортированных по количеству просмотров в порядке убывания
+    public function rating(Request $request)
+{
+    // Определяем сортировку
+    $sortBy = $request->input('sort', 'views'); // По умолчанию сортируем по просмотрам
+
+    // Получаем постеры в зависимости от выбранной сортировки
+    if ($sortBy === 'rank') {
         $posts = Poster::where('visibility', 1)
-            ->orderBy('views', 'desc')
+            ->withAvg('ratings', 'rank') // Предполагаем, что у вас есть связь с рейтингами
+            ->orderBy('ratings_avg_rank', 'desc') // Сортируем по среднему рейтингу
             ->limit(10)
             ->get();
-
-        return view('rating', ['posts' => $posts]);
+    } else {
+        $posts = Poster::where('visibility', 1)
+            ->orderBy('views', 'desc') // Сортируем по просмотрам
+            ->limit(10)
+            ->get();
     }
+
+    return view('rating', ['posts' => $posts, 'sortBy' => $sortBy]);
+}
 
     // Добавление нового комментария
     public function new_comment($id, Request $request)
@@ -154,5 +171,36 @@ class HomeController extends Controller
         }
 
         return redirect()->back();
+    }
+    public function store(Request $request, $poster_id)
+    {
+        $request->validate([
+            'rank' => 'required|integer|min:1|max:10', // Измените здесь на rank
+        ]);
+
+        $rating = Rating::updateOrCreate(
+            ['user_id' => Auth::id(), 'poster_id' => $poster_id],
+            ['rating' => $request->rank] // Измените здесь на rank
+        );
+
+        return redirect()->back()->with('success', 'Ваша оценка сохранена.');
+    }
+
+    public function show($poster_id)
+    {
+        $poster = Poster::findOrFail($poster_id);
+        // Передаем переменные в представление post.blade.php
+        return view('post', compact('poster'));
+    }
+
+    private function getUserRating($poster_id)
+    {
+        if (Auth::check()) {
+            $userRating = Rating::where('user_id', Auth::id())
+                ->where('poster_id', $poster_id)
+                ->first();
+            return $userRating ? $userRating->rating : null;
+        }
+        return null;
     }
 }

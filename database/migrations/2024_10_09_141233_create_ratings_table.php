@@ -4,15 +4,17 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePostRatingsTable extends Migration
-{
-    public function up()
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
-        Schema::create('post_ratings', function (Blueprint $table) {
+        Schema::create('ratings', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('poster_id');
-            $table->integer('rank')->unsigned(); // Изменено на rank
+            $table->integer('rank'); // Изменено на rank
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
@@ -20,8 +22,12 @@ class CreatePostRatingsTable extends Migration
         });
     }
 
-    public function down()
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
-        Schema::dropIfExists('post_ratings');
+        Schema::dropIfExists('ratings');
     }
-}
+};

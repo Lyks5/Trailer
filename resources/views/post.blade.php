@@ -114,7 +114,7 @@
                                 required>
                                 @for ($i = 1; $i <= 10; $i++)
                                     <option value="{{ $i }}" {{ $userRating == $i ? 'selected' : '' }}>
-                                        {{ $i }} звезда{{ $i > 1 ? 's' : '' }}
+                                        {{ $i }} звезда{{ $i > 1 ? '' : '' }}
                                     </option>
                                 @endfor
                             </select>
@@ -138,11 +138,11 @@
                         <h2 class="text-lg lg:text-2xl font-bold text-gray-900">Текущие оценки</h2>
                     </div>
                     <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200">
-                        <p class="text-gray-900">Средняя оценка: {{ number_format($averageRating ?? 0, 1) }}
-                            звезда{{ ($averageRating ?? 0) > 1 ? 's' : '' }}</p>
+                        <p class="text-gray-900">Средняя оценка: {{ number_format($averageRating ?? 0, decimals: 1) }}
+                            звезда{{ ($averageRating ?? 0) > 1 ? '' : '' }}</p>
                         <ul>
                             @foreach ($ratings as $rating)
-                                <li class="text-gray-900">{{ $rating->user->name }}: {{ $rating->rating }}
+                                <li class="text-gray-900">{{ $rating->user->name }}: {{ $rating->rank }}
                                     звезда{{ $rating->rating > 1 ? 's' : '' }}</li>
                             @endforeach
                         </ul>

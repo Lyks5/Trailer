@@ -26,6 +26,30 @@ class DatabaseSeeder extends Seeder
             'is_admin' => 1,
             'password' => Hash::make('rootroot'),
         ]);
+        User::factory()->create([
+            'name' => 'user1',
+            'email' => 'user1@gmail.com',
+            'is_admin' => 1,
+            'password' => Hash::make('root'),
+        ]);
+        User::factory()->create([
+            'name' => 'user2',
+            'email' => 'user2@gmail.com',
+            'is_admin' => 1,
+            'password' => Hash::make('root'),
+        ]);
+        User::factory()->create([
+            'name' => 'user3',
+            'email' => 'user3@gmail.com',
+            'is_admin' => 1,
+            'password' => Hash::make('root'),
+        ]);
+        User::factory()->create([
+            'name' => 'user4',
+            'email' => 'user4@gmail.com',
+            'is_admin' => 1,
+            'password' => Hash::make('root'),
+        ]);
 
         Poster::create([
             'name' => 'Пассажир',
@@ -98,6 +122,7 @@ class DatabaseSeeder extends Seeder
             'visibility' => 1
         ]);
         $this->call(GenrePosterSeeder::class);
-
+        $this->call(RatingSeeder::class);
+        $this->call(ViewsTableSeeder::class);
     }
 }
