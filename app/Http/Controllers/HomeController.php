@@ -90,28 +90,29 @@ class HomeController extends Controller
 
     // Страница Что посмотреть
     public function see(Request $request)
-    {
-        // Получаем все жанры
-        $genres = Genre::pluck('name')->unique()->values()->all();
+{
+    // Получаем все жанры
+    $genres = Genre::pluck('name')->unique()->values()->all();
 
-        // Получаем параметр жанра из запроса
-        $genre = $request->input('genre');
+    // Получаем массив жанров из запроса
+    $selectedGenres = json_decode($request->input('genres'), true) ?? [];
 
-        // Если жанр указан, фильтруем по нему, иначе выбираем случайные постеры
-        if ($genre) {
-            $posts = Poster::whereHas('genres', function ($query) use ($genre) {
-                $query->where('name', $genre);
-            })->inRandomOrder()->limit(15)->get();
-        } else {
-            $posts = Poster::inRandomOrder()->limit(15)->get();
-        }
-
-        // Возвращаем представление 'see' с полученными постерами и жанрами
-        return view('see', [
-            'posts' => $posts,
-            'genres' => $genres,
-        ]);
+    // Если выбраны жанры, фильтруем по ним, иначе выбираем случайные постеры
+    if (!empty($selectedGenres)) {
+        $posts = Poster::whereHas('genres', function ($query) use ($selectedGenres) {
+            $query->whereIn('name', $selectedGenres);
+        })->inRandomOrder()->limit(15)->get();
+    } else {
+        $posts = Poster::inRandomOrder()->limit(15)->get();
     }
+
+    // Возвращаем представление 'see' с полученными постерами и жанрами
+    return view('see', [
+        'posts' => $posts,
+        'genres' => $genres,
+        'selectedGenres' => $selectedGenres, // Передаем выбранные жанры
+    ]);
+}
 
     // Страница Рейтинг
     public function rating(Request $request)

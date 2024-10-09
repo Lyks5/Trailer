@@ -67,9 +67,6 @@
     <!-- Подключение Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-
-
-
     <div
         class=" fixed bg-white top-0 left-0 md:hidden container mx-auto px-4 py-4 flex flex-col items-center max-w-screen-xl z-50">
         <nav class="grid grid-cols-5 gap-10" id="nav-links">
