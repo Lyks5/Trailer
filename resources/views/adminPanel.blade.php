@@ -26,7 +26,7 @@
                     <img src="{{ asset($post->image) }}" alt="Movie 1" class="w-full min-h-96 max-h-96 object-cover">
                     <div class="p-4 min-h-56 relative">
                         <h3 class="font-bold ">{{ $post->name }}</h3>
-                        
+
                         <a href="{{ route('Post', ['post_id' => $post->id]) }}"
                             class="text-blue-500 hover:underline">Подробнее</a>
                         <div class="flex justify-center w-full gap-3 pt-3 absolute bottom-5 left-0">
@@ -49,7 +49,7 @@
 </div>
 {{-- Модальное окно --}}
 <div style="background-color: rgb(0, 0, 0, 0.4);" id="default-modal" tabindex="-1" aria-hidden="true"
-    class=" hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] h-screen">
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] h-screen">
     <div class="relative p-4 w-1/2 max-w-9xl max-h-9xl">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow">
@@ -71,9 +71,9 @@
             </div>
 
             <!-- Modal body -->
-            <div class="p-4 md:p-5 space-y-4">
+            <div class="p-4 md:p-5 space-y-4" x-data="{ selectedGenres: [] }">
                 <form class="max-w-md mx-auto" method="POST" action="{{ route('NewPoster') }}"
-                    enctype="multipart/form-data">
+                    enctype="multipart/form-data" @submit.prevent="submitForm">
                     @csrf
                     <div class="relative z-0 w-full mb-5 group">
                         <input type="text" name="name" id="name"
@@ -96,12 +96,12 @@
                     </div>
                     <div class="relative z-0 w-full mb-5 group">
                         <label for="genres" class="block mb-2 text-sm font-medium text-gray-900">Жанры</label>
-                        <select name="genres[]" id="genres" multiple required
-                            class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500">
+                        <div class="flex flex-wrap gap-2">
                             @foreach ($genres as $genre)
-                                <option value="{{ $genre->id }}">{{ $genre->name }}</option>
+                                <button type="button" @click="selectedGenres.includes({{ $genre->id }}) ? selectedGenres = selectedGenres.filter(g => g !== {{ $genre->id }}) : selectedGenres.push({{ $genre->id }})" :class="{ 'bg-blue-500 text-white': selectedGenres.includes({{ $genre->id }}), 'bg-gray-200 text-gray-700': !selectedGenres.includes({{ $genre->id }}) }" class="px-3 py-1 rounded-full transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white">{{ $genre->name }}</button>
                             @endforeach
-                        </select>
+                        </div>
+                        <input type="hidden" name="genres" :value="selectedGenres.join(',')">
                     </div>
                     <button type="submit"
                         class="text-white bg-black hover:bg-slate-400 focus:ring-4 focus:outline-none focus:ring-slate-200 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Загрузить</button>
@@ -110,5 +110,15 @@
         </div>
     </div>
 </div>
+
+<script>
+    function submitForm() {
+        const form = document.querySelector('form');
+        const genresInput = document.querySelector('input[name="genres"]');
+        const genresArray = genresInput.value.split(',');
+        genresInput.value = JSON.stringify(genresArray);
+        form.submit();
+    }
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 @endsection

@@ -11,7 +11,7 @@ class AdminController extends Controller
     // создание поста
     public function index()
     {
-        $genres = Genre::all(); 
+        $genres = Genre::all();
         $posters = Poster::orderBy('created_at', 'DESC')->get();
         return view('adminPanel', ['posters' => $posters], compact('genres'));
     }
@@ -21,7 +21,6 @@ class AdminController extends Controller
         $genres = Genre::all(); // Получаем все жанры
         return view('posters.create', compact('genres'));
     }
-
     public function new_poster(Request $request)
     {
         $validated = $request->validate([

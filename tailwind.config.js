@@ -8,9 +8,22 @@ export default {
     theme: {
         extend: {
             screens: {
-                xs: '360px',
-            }
+                xs: "360px",
+            },
         },
     },
     plugins: [],
+};
+
+module.exports = {
+    content: [
+        "./resources/**/*.blade.php",
+        "./resources/**/*.js",
+        "./resources/**/*.vue",
+        "./node_modules/flowbite/**/*.js",
+    ],
+    theme: {
+        extend: {},
+    },
+    plugins: [require("flowbite/plugin")],
 };

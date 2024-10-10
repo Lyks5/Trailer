@@ -90,52 +90,51 @@ class HomeController extends Controller
 
     // Страница Что посмотреть
     public function see(Request $request)
-{
-    // Получаем все жанры
-    $genres = Genre::pluck('name')->unique()->values()->all();
+    {
+        // Получаем все жанры
+        $genres = Genre::pluck('name')->unique()->values()->all();
 
-    // Получаем массив жанров из запроса
-    $selectedGenres = json_decode($request->input('genres'), true) ?? [];
+        // Получаем выбранные жанры из запроса и преобразуем их в массив
+        $selectedGenres = is_string($request->input('genres')) ? explode(',', $request->input('genres')) : $request->input('genres', []);
 
-    // Если выбраны жанры, фильтруем по ним, иначе выбираем случайные постеры
-    if (!empty($selectedGenres)) {
-        $posts = Poster::whereHas('genres', function ($query) use ($selectedGenres) {
-            $query->whereIn('name', $selectedGenres);
-        })->inRandomOrder()->limit(15)->get();
-    } else {
-        $posts = Poster::inRandomOrder()->limit(15)->get();
+        // Если выбраны жанры, фильтруем по ним, иначе выбираем случайные постеры
+        if (!empty($selectedGenres)) {
+            $posts = Poster::whereHas('genres', function ($query) use ($selectedGenres) {
+                $query->whereIn('name', $selectedGenres);
+            })->inRandomOrder()->limit(15)->get();
+        } else {
+            $posts = Poster::inRandomOrder()->limit(15)->get();
+        }
+
+        // Возвращаем представление 'see' с полученными постерами и жанрами
+        return view('see', [
+            'posts' => $posts,
+            'genres' => $genres,
+            'selectedGenres' => $selectedGenres, // Передаем выбранные жанры
+        ]);
     }
-
-    // Возвращаем представление 'see' с полученными постерами и жанрами
-    return view('see', [
-        'posts' => $posts,
-        'genres' => $genres,
-        'selectedGenres' => $selectedGenres, // Передаем выбранные жанры
-    ]);
-}
-
     // Страница Рейтинг
     public function rating(Request $request)
-{
-    // Определяем сортировку
-    $sortBy = $request->input('sort', 'views'); // По умолчанию сортируем по просмотрам
+    {
+        // Определяем сортировку
+        $sortBy = $request->input('sort', 'views'); // По умолчанию сортируем по просмотрам
 
-    // Получаем постеры в зависимости от выбранной сортировки
-    if ($sortBy === 'rank') {
-        $posts = Poster::where('visibility', 1)
-            ->withAvg('ratings', 'rank') // Предполагаем, что у вас есть связь с рейтингами
-            ->orderBy('ratings_avg_rank', 'desc') // Сортируем по среднему рейтингу
-            ->limit(10)
-            ->get();
-    } else {
-        $posts = Poster::where('visibility', 1)
-            ->orderBy('views', 'desc') // Сортируем по просмотрам
-            ->limit(10)
-            ->get();
+        // Получаем постеры в зависимости от выбранной сортировки
+        if ($sortBy === 'rank') {
+            $posts = Poster::where('visibility', 1)
+                ->withAvg('ratings', 'rank') // Предполагаем, что у вас есть связь с рейтингами
+                ->orderBy('ratings_avg_rank', 'desc') // Сортируем по среднему рейтингу
+                ->limit(10)
+                ->get();
+        } else {
+            $posts = Poster::where('visibility', 1)
+                ->orderBy('views', 'desc') // Сортируем по просмотрам
+                ->limit(10)
+                ->get();
+        }
+
+        return view('rating', ['posts' => $posts, 'sortBy' => $sortBy]);
     }
-
-    return view('rating', ['posts' => $posts, 'sortBy' => $sortBy]);
-}
 
     // Добавление нового комментария
     public function new_comment($id, Request $request)
