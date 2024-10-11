@@ -17,7 +17,7 @@ Route::get('/post/{post_id}/ratings', [App\Http\Controllers\RatingController::cl
 Route::get('/post/post/{post_id}/hide', [App\Http\Controllers\AdminController::class, 'hide'])->name('posthide')->middleware([IsAdmin::class]);
 Route::get('/post/restore/{id}', [App\Http\Controllers\AdminController::class, 'restore'])->name('postrestore');
 Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin')->middleware([IsAdmin::class]);
-Route::post('/admin/new_poster', [App\Http\Controllers\AdminController::class, 'new_poster'])->name('NewPoster')->middleware([IsAdmin::class]);
+Route::post('/admin/new_poster', [App\Http\Controllers\AdminController::class, 'new_poster'])->name(name: 'NewPoster')->middleware([IsAdmin::class]);
 Route::get('/new_poster', [App\Http\Controllers\AdminController::class, 'showForm'])->name('NewPosterForm');
 
 Route::get('/admin/edit_poster/{post_id}', [App\Http\Controllers\AdminController::class, 'edit_poster'])->name('editPosts')->middleware([IsAdmin::class]);

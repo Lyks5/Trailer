@@ -1,41 +1,64 @@
 <!-- Header -->
 <header class="bg-white shadow">
     <div class="container mx-auto px-4 py-4 flex sm:justify-center md:justify-between items-center max-w-screen-xl">
-        <div class="flex sm: items-center">
+        <div class="flex sm:items-center">
             <a href="{{ route('welcome') }}">
                 <h1 class="text-black text-3xl sm:justify-center font-bold">КИНОАФИША</h1>
             </a>
         </div>
-        <nav class="xs:hidden md:flex flex-grow justify-center space-x-8">
-            <ul class="flex space-x-8">
-                <li>
+        <nav class="xs:hidden md:flex flex-grow justify-center space-x-8" x-data="{ isAdminMenuOpen: false }">
+            <ul class="flex space-x-8 h-full items-stretch" id="main-nav">
+                <li class="flex items-center">
                     <a href="/" class="text-black relative group">
                         Афиша
                         <span
                             class="absolute left-0 right-0 bottom-[-5px] h-0.5 bg-black scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
                     </a>
                 </li>
-                <li>
+                <li class="flex items-center">
                     <a href="{{ route('see') }}" class="text-black relative group">
                         Что посмотреть
                         <span
                             class="absolute left-0 right-0 bottom-[-5px] h-0.5 bg-black scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
                     </a>
                 </li>
-                <li>
+                <li class="flex items-center">
                     <a href="{{ route('rating') }}" class="text-black relative group">
                         Рейтинг
                         <span
                             class="absolute left-0 right-0 bottom-[-5px] h-0.5 bg-black scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
                     </a>
                 </li>
-                @if (Auth::user() and Auth::user()->is_admin == 1)
-                    <li>
-                        <a href="{{ route('admin') }}" class="text-black relative group">
+                @if (Auth::user() && Auth::user()->is_admin == 1)
+                    <li class="flex items-center relative" @mouseenter="isAdminMenuOpen = true" @mouseleave="isAdminMenuOpen = false">
+                        <a href="{{route('admin')}}" class="text-black relative group">
                             Админка
                             <span
                                 class="absolute left-0 right-0 bottom-[-5px] h-0.5 bg-black scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
                         </a>
+                        <ul class="flex space-x-8 absolute left-1/7 transform -translate-x-1/2 top-full bg-white shadow-lg p-4 rounded-lg transition-all duration-300 " :class="{ 'opacity-100': isAdminMenuOpen, 'opacity-0 pointer-events-none': !isAdminMenuOpen }" id="admin-nav">
+                            <li>
+                                <a href="#" class="text-black relative group">
+                                    Управление пользователями
+                                    <span
+                                        class="absolute left-0 right-0 bottom-[-5px] h-0.5 bg-black scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="text-black relative group">
+                                    Управление контентом
+                                    <span
+                                        class="absolute left-0 right-0 bottom-[-5px] h-0.5 bg-black scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="text-black relative group">
+                                    Аналитика
+                                    <span
+                                        class="absolute left-0 right-0 bottom-[-5px] h-0.5 bg-black scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 @endif
             </ul>
@@ -68,7 +91,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <div
-        class=" fixed bg-white top-0 left-0 md:hidden container mx-auto px-4 py-4 flex flex-col items-center max-w-screen-xl z-50">
+        class="fixed bg-white top-0 left-0 md:hidden container mx-auto px-4 py-4 flex flex-col items-center max-w-screen-xl z-50">
         <nav class="grid grid-cols-5 gap-10" id="nav-links">
             <a href="/" class="flex flex-col items-center">
                 <img class="w-16" src="{{ asset('sait/afisha.svg') }}" alt="Афиша">
@@ -136,7 +159,6 @@
             }
         });
     </script>
-
     </div>
     </div>
 </header>

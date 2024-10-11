@@ -8,6 +8,7 @@ use App\Models\Genre;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,7 +18,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(GenreSeeder::class);
-        
+
         User::factory(10)->create();
 
         User::factory()->create([
@@ -121,8 +122,24 @@ class DatabaseSeeder extends Seeder
             'image' => 'posters/22.jpg',
             'visibility' => 1
         ]);
+        // $faker = Faker::create();
+
+        // for ($i = 0; $i < 10000; $i++) {
+        //     $name = $faker->unique()->sentence(3); // Генерируем уникальное название фильма
+        //     $description = $faker->paragraph(3); // Генерируем описание
+        //     $image = 'posters/' . ($i + 1) . '.jpg'; // Генерируем путь к изображению
+        //     $visibility = $faker->boolean; // Генерируем случайное значение видимости
+
+        //     Poster::create([
+        //         'name' => $name,
+        //         'description' => $description,
+        //         'image' => 'posters/112.jpg',
+        //         'visibility' => $visibility,
+        //     ]);
+        // }
         $this->call(GenrePosterSeeder::class);
         $this->call(RatingSeeder::class);
         $this->call(ViewsTableSeeder::class);
     }
+    
 }

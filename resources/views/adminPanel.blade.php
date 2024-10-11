@@ -73,7 +73,7 @@
             <!-- Modal body -->
             <div class="p-4 md:p-5 space-y-4" x-data="{ selectedGenres: [] }">
                 <form class="max-w-md mx-auto" method="POST" action="{{ route('NewPoster') }}"
-                    enctype="multipart/form-data" @submit.prevent="submitForm">
+                    enctype="multipart/form-data">
                     @csrf
                     <div class="relative z-0 w-full mb-5 group">
                         <input type="text" name="name" id="name"

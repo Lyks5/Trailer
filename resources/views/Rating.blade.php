@@ -5,7 +5,7 @@
     <h2 class="text-2xl font-bold mb-4">Рейтинг фильмов</h2>
 
     <!-- Кнопки сортировки -->
-    <div class="mb-4">
+    <div class="mb-8">
         <a href="{{ route('rating', ['sort' => 'views']) }}"
             class="bg-blue-500 text-white px-4 py-2 rounded mr-2 {{ $sortBy === 'views' ? 'font-bold' : '' }}">
             По количеству просмотров
