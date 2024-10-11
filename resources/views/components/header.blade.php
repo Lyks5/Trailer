@@ -30,36 +30,27 @@
                     </a>
                 </li>
                 @if (Auth::user() && Auth::user()->is_admin == 1)
-                    <li class="flex items-center relative" @mouseenter="isAdminMenuOpen = true" @mouseleave="isAdminMenuOpen = false">
-                        <a href="{{route('admin')}}" class="text-black relative group">
-                            Админка
-                            <span
-                                class="absolute left-0 right-0 bottom-[-5px] h-0.5 bg-black scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
-                        </a>
-                        <ul class="flex space-x-8 absolute left-1/7 transform -translate-x-1/2 top-full bg-white shadow-lg p-4 rounded-lg transition-all duration-300 " :class="{ 'opacity-100': isAdminMenuOpen, 'opacity-0 pointer-events-none': !isAdminMenuOpen }" id="admin-nav">
-                            <li>
-                                <a href="#" class="text-black relative group">
-                                    Управление пользователями
-                                    <span
-                                        class="absolute left-0 right-0 bottom-[-5px] h-0.5 bg-black scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="text-black relative group">
-                                    Управление контентом
-                                    <span
-                                        class="absolute left-0 right-0 bottom-[-5px] h-0.5 bg-black scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="text-black relative group">
-                                    Аналитика
-                                    <span
-                                        class="absolute left-0 right-0 bottom-[-5px] h-0.5 bg-black scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                <li class="relative flex items-center" 
+    @mouseenter="isAdminMenuOpen = true; clearTimeout(timeoutId)" 
+    @mouseleave="timeoutId = setTimeout(() => { isAdminMenuOpen = false }, 500)">
+    <a href="{{ route('admin') }}" class="text-black relative group">
+        Админка
+        <span class="absolute left-0 right-0 bottom-[-5px] h-0.5 bg-black scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+    </a>
+    <ul class="absolute left-1/2 transform -translate-x-1/2 top-full bg-white shadow-lg p-2 rounded-lg transition-all duration-300 opacity-0 pointer-events-none flex flex-col z-50" 
+        :class="{ 'opacity-100 pointer-events-auto': isAdminMenuOpen }" 
+        id="admin-nav">
+        <li class="w-full">
+            <a href="#" class="block text-black relative group py-2 px-4 text-left whitespace-nowrap hover:bg-gray-200 rounded">Управление пользователями</a>
+        </li>
+        <li class="w-full">
+            <a href="#" class="block text-black relative group py-2 px-4 text-left whitespace-nowrap hover:bg-gray-200 rounded">Управление контентом</a>
+        </li>
+        <li class="w-full">
+            <a href="{{route('stat')}}" class="block text-black relative group py-2 px-4 text-left whitespace-nowrap hover:bg-gray-200 rounded">Аналитика</a>
+        </li>
+    </ul>
+</li>
                 @endif
             </ul>
         </nav>

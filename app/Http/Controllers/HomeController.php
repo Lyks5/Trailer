@@ -8,7 +8,9 @@ use App\Models\Comment;
 use App\Models\Like;
 use App\Models\View;
 use App\Models\Genre;
+use App\Models\User;
 use App\Models\Rating;
+use Illuminate\Support\Facades\DB;
 use Auth;
 
 class HomeController extends Controller
