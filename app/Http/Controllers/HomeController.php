@@ -10,6 +10,8 @@ use App\Models\View;
 use App\Models\Genre;
 use App\Models\User;
 use App\Models\Rating;
+use App\Models\Analytic;
+use Closure;
 use Illuminate\Support\Facades\DB;
 use Auth;
 
@@ -177,12 +179,12 @@ class HomeController extends Controller
     public function store(Request $request, $poster_id)
     {
         $request->validate([
-            'rank' => 'required|integer|min:1|max:10', // Измените здесь на rank
+            'rank' => 'required|integer|min:1|max:10', 
         ]);
 
         $rating = Rating::updateOrCreate(
             ['user_id' => Auth::id(), 'poster_id' => $poster_id],
-            ['rating' => $request->rank] // Измените здесь на rank
+            ['rating' => $request->rank] 
         );
 
         return redirect()->back()->with('success', 'Ваша оценка сохранена.');
@@ -204,5 +206,16 @@ class HomeController extends Controller
             return $userRating ? $userRating->rating : null;
         }
         return null;
+    }
+    public function handle(Request $request, Closure $next)
+    {
+        // Регистрируем событие просмотра страницы
+        Analytic::create([
+            'event_type' => 'page_view',
+            'url' => $request->fullUrl(),
+            'user_id' => auth()->id(), // Если пользователь авторизован
+        ]);
+
+        return $next($request);
     }
 }

@@ -6,13 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Analytic extends Model
 {
-    protected $fillable = [
-        'event_type',
-        'event_value',
-        'user_id',
-        'user_agent',
-        'ip_address',
-    ];
+    protected $fillable = ['event_type', 'url', 'user_id'];
 
     public function user()
     {

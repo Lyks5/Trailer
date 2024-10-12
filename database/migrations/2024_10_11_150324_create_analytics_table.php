@@ -10,14 +10,10 @@ class CreateAnalyticsTable extends Migration
     {
         Schema::create('analytics', function (Blueprint $table) {
             $table->id();
-            $table->string('event_type'); // Тип события (просмотр страницы, клик и т.д.)
-            $table->string('event_value')->nullable(); // Значение события (например, URL страницы)
-            $table->unsignedBigInteger('user_id')->nullable(); // ID пользователя (если авторизован)
-            $table->string('user_agent')->nullable(); // User-Agent браузера
-            $table->string('ip_address')->nullable(); // IP-адрес пользователя
+            $table->string('event_type'); // Тип события: page_view, link_click, time_on_site
+            $table->text('url')->nullable(); // URL страницы
+            $table->unsignedBigInteger('user_id')->nullable(); // ID пользователя (если есть)
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

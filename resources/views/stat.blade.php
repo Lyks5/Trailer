@@ -1,8 +1,11 @@
 @extends('layouts.app')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Подключение ApexCharts.js -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 <!-- Подключение вашего JavaScript файла -->
 <script src="{{ asset('js/stats.js') }}"></script>
+
 @section('content')
 <div class="max-w-screen-2xl w-full h-auto mx-auto my-0 mb-20">
     <div class="flex justify-between pt-20">
@@ -45,18 +48,6 @@
             <h2 class="text-xl font-semibold text-gray-900">Общее количество просмотров страниц</h2>
             <p class="text-4xl font-bold text-blue-600 mt-4">{{ $analyticsData['pageViews'] }}</p>
         </div>
-
-        <!-- Общее количество кликов по ссылкам -->
-        <div class="bg-white rounded-lg shadow-lg p-6">
-            <h2 class="text-xl font-semibold text-gray-900">Общее количество кликов по ссылкам</h2>
-            <p class="text-4xl font-bold text-green-600 mt-4">{{ $analyticsData['linkClicks'] }}</p>
-        </div>
-
-        <!-- Общее количество времени на сайте -->
-        <div class="bg-white rounded-lg shadow-lg p-6">
-            <h2 class="text-xl font-semibold text-gray-900">Общее количество времени на сайте</h2>
-            <p class="text-4xl font-bold text-purple-600 mt-4">{{ $analyticsData['timeOnSite'] }}</p>
-        </div>
     </div>
 
     <!-- Графики -->
@@ -66,37 +57,23 @@
             <!-- График количества постов по месяцам -->
             <div class="bg-white rounded-lg shadow-lg p-6">
                 <h3 class="text-xl font-semibold text-gray-900">Количество постов по месяцам</h3>
-                <canvas id="postsChart"></canvas>
+                <div id="postsChart"></div>
             </div>
 
             <!-- График количества комментариев по месяцам -->
             <div class="bg-white rounded-lg shadow-lg p-6">
                 <h3 class="text-xl font-semibold text-gray-900">Количество комментариев по месяцам</h3>
-                <canvas id="commentsChart"></canvas>
+                <div id="commentsChart"></div>
             </div>
 
             <!-- График количества просмотров страниц -->
             <div class="bg-white rounded-lg shadow-lg p-6">
                 <h3 class="text-xl font-semibold text-gray-900">Количество просмотров страниц</h3>
-                <canvas id="pageViewsChart"></canvas>
-            </div>
-
-            <!-- График количества кликов по ссылкам -->
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h3 class="text-xl font-semibold text-gray-900">Количество кликов по ссылкам</h3>
-                <canvas id="linkClicksChart"></canvas>
-            </div>
-
-            <!-- График количества времени на сайте -->
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h3 class="text-xl font-semibold text-gray-900">Количество времени на сайте</h3>
-                <canvas id="timeOnSiteChart"></canvas>
+                <div id="pageViewsChart"></div>
             </div>
         </div>
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- JavaScript код -->
 <script>
@@ -106,113 +83,48 @@
     const analyticsData = {!! json_encode($analyticsData) !!};
 
     // График количества постов по месяцам
-    const postsChart = new Chart(document.getElementById('postsChart'), {
-        type: 'line',
-        data: {
-            labels: postsData.labels,
-            datasets: [{
-                label: 'Количество постов',
-                data: postsData.data,
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
+    const postsChart = new ApexCharts(document.querySelector("#postsChart"), {
+        chart: {
+            type: 'line'
         },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
+        series: [{
+            name: 'Количество постов',
+            data: postsData.data
+        }],
+        xaxis: {
+            categories: postsData.labels
         }
     });
+    postsChart.render();
 
     // График количества комментариев по месяцам
-    const commentsChart = new Chart(document.getElementById('commentsChart'), {
-        type: 'bar',
-        data: {
-            labels: commentsData.labels,
-            datasets: [{
-                label: 'Количество комментариев',
-                data: commentsData.data,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
+    const commentsChart = new ApexCharts(document.querySelector("#commentsChart"), {
+        chart: {
+            type: 'bar'
         },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
+        series: [{
+            name: 'Количество комментариев',
+            data: commentsData.data
+        }],
+        xaxis: {
+            categories: commentsData.labels
         }
     });
+    commentsChart.render();
 
     // График количества просмотров страниц
-    const pageViewsChart = new Chart(document.getElementById('pageViewsChart'), {
-        type: 'bar',
-        data: {
-            labels: ['Просмотры страниц'],
-            datasets: [{
-                label: 'Количество просмотров',
-                data: [analyticsData.pageViews],
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1
-            }]
+    const pageViewsChart = new ApexCharts(document.querySelector("#pageViewsChart"), {
+        chart: {
+            type: 'bar'
         },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
+        series: [{
+            name: 'Количество просмотров',
+            data: [analyticsData.pageViews]
+        }],
+        xaxis: {
+            categories: ['Просмотры страниц']
         }
     });
-
-    // График количества кликов по ссылкам
-    const linkClicksChart = new Chart(document.getElementById('linkClicksChart'), {
-        type: 'bar',
-        data: {
-            labels: ['Клик по ссылкам'],
-            datasets: [{
-                label: 'Количество кликов',
-                data: [analyticsData.linkClicks],
-                backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                borderColor: 'rgba(153, 102, 255, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-    // График количества времени на сайте
-    const timeOnSiteChart = new Chart(document.getElementById('timeOnSiteChart'), {
-        type: 'bar',
-        data: {
-            labels: ['Время на сайте'],
-            datasets: [{
-                label: 'Количество записей',
-                data: [analyticsData.timeOnSite],
-                backgroundColor: 'rgba(255, 159, 64, 0.2)',
-                borderColor: 'rgba(255, 159, 64, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
+    pageViewsChart.render();
 </script>
 @endsection
