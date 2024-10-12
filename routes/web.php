@@ -4,6 +4,7 @@ use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\TrackPageViews;
 use Illuminate\Support\Facades\Route;
 use App\Models\Analytic;
+use App\Http\Controllers\AdminController;
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'welcome'])->middleware([TrackPageViews::class])->name('welcome');
@@ -23,11 +24,17 @@ Route::get('/new_poster', [App\Http\Controllers\AdminController::class, 'showFor
 Route::get('/stats', [App\Http\Controllers\AdminController::class, 'stat'])->name('stat')->middleware([IsAdmin::class]);
 Route::get('/admin/edit_poster/{post_id}', [App\Http\Controllers\AdminController::class, 'edit_poster'])->name('editPosts')->middleware([IsAdmin::class]);
 Route::post('/admin/save_edit/{poster_id}', [App\Http\Controllers\AdminController::class, 'save_edit'])->name('save_posts')->middleware([IsAdmin::class]);
-
+Route::get('/users', [App\Http\Controllers\AdminController::class, 'users'])->name('users')->middleware([IsAdmin::class]);
 
 Route::post('/search', [App\Http\Controllers\HomeController::class, 'search'])->name('Search');
 Route::post('/video/{id}/newComment', [App\Http\Controllers\HomeController::class, 'new_comment'])->name('newComment');
 
+
+
+Route::get('/users', [App\Http\Controllers\AdminController::class, 'users'])->middleware([IsAdmin::class])->name('users');
+Route::get('/users/{id}/edit', [App\Http\Controllers\AdminController::class, 'editUser'])->middleware([IsAdmin::class])->name('users.edit');
+Route::post('/users/{id}/block', [App\Http\Controllers\AdminController::class, 'blockUser'])->middleware([IsAdmin::class])->name('users.block');
+Route::get('/users/{id}/details', [App\Http\Controllers\AdminController::class, 'showUserDetails'])->middleware([IsAdmin::class])->name('users.details');
 
 Route::get('/liked/add/{product_id}', [App\Http\Controllers\HomeController::class, 'add_liked'])->name('ToLike')->middleware(['auth', 'verified']);
 Route::get('login/yandex', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'yandex'])->name('yandex');

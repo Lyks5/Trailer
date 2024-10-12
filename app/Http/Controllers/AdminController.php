@@ -202,5 +202,32 @@ class AdminController extends Controller
             'timeOnSite' => $timeOnSite
         ];
     }
+    public function users()
+    {
+        $users = User::with(['comments', 'likes'])->get();
+        return view('users', compact('users'));
+    }
+
+    public function editUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        // Логика редактирования пользователя
+        return redirect()->route('users')->with('success', 'User updated successfully');
+    }
+
+    public function blockUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $user->is_admin = 0; // Пример блокировки пользователя
+        $user->save();
+        return redirect()->route('users')->with('success', 'User blocked successfully');
+    }
+
+    public function showUserDetails($id)
+    {
+        $user = User::findOrFail($id);
+        // Получение дополнительной информации о пользователе (комментарии, избранные фильмы и т.д.)
+        return view('admin.user_details', compact('user'));
+    }
     
 }
