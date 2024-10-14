@@ -52,7 +52,11 @@
                             Войти
                         </button>
                     </div>
-                    
+                    @if(session('error'))
+                        <div class="mt-4 text-red-500 text-center">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                 </div>
             </form>
             

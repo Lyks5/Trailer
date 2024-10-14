@@ -28,35 +28,35 @@ class AdminController extends Controller
         return view('posters.create', compact('genres'));
     }
     public function new_poster(Request $request)
-{
-    $validated = $request->validate([
-        'name' => 'required',
-        'description' => 'required',
-        'photo' => 'required|image|mimes:jpg,png,jpeg,webp|max:2048',
-        'genres' => 'required',
-    ]);
+    {
+        $validated = $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'photo' => 'required|image|mimes:jpg,png,jpeg,webp|max:2048',
+            'genres' => 'required',
+        ]);
 
-    $name = time() . "." . $request->photo->extension();
-    $destination = 'public/';
-    $path = $request->photo->storeAs($destination, $name);
+        $name = time() . "." . $request->photo->extension();
+        $destination = 'public/';
+        $path = $request->photo->storeAs($destination, $name);
 
-    $info = [
-        'name' => $request->name,
-        'description' => $request->description,
-        'image' => 'storage/' . $name,
-    ];
+        $info = [
+            'name' => $request->name,
+            'description' => $request->description,
+            'image' => 'storage/' . $name,
+        ];
 
-    $poster = Poster::firstOrCreate(['name' => $info['name']], $info);
+        $poster = Poster::firstOrCreate(['name' => $info['name']], $info);
 
-    if ($poster->wasRecentlyCreated) {
-        // Преобразуем строку жанров в массив
-        $genresArray = explode(',', $request->genres);
-        $poster->genres()->sync($genresArray);
-        return redirect()->back()->with('success', 'Постер успешно создан');
-    } else {
-        return redirect()->back()->withErrors(['error' => 'Такой постер уже существует']);
+        if ($poster->wasRecentlyCreated) {
+            // Преобразуем строку жанров в массив
+            $genresArray = explode(',', $request->genres);
+            $poster->genres()->sync($genresArray);
+            return redirect()->back()->with('success', 'Постер успешно создан');
+        } else {
+            return redirect()->back()->withErrors(['error' => 'Такой постер уже существует']);
+        }
     }
-}
     // Функция скрытия 
     public function hide($id)
     {
@@ -125,7 +125,7 @@ class AdminController extends Controller
         // Возвращаемся на предыдущую страницу с сообщением об успехе
         return redirect()->back()->with('success', 'Постер успешно обновлён.');
     }
-    
+
     public function stat()
     {
         $totalPosts = Poster::count();
@@ -217,10 +217,20 @@ class AdminController extends Controller
 
     public function blockUser(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-        $user->is_admin = 0; // Пример блокировки пользователя
+        $user = User::find($id);
+
+        if (!$user) {
+            return redirect()->route('users')->with('error', 'Пользователь не найден');
+        }
+
+        if ($user->blocked) {
+            return redirect()->route('users')->with('error', 'Пользователь уже заблокирован');
+        }
+
+        $user->blocked = true; // Блокировка пользователя
         $user->save();
-        return redirect()->route('users')->with('success', 'User blocked successfully');
+
+        return redirect()->route('users')->with('success', 'Пользователь успешно заблокирован');
     }
 
     public function showUserDetails($id)
@@ -229,5 +239,5 @@ class AdminController extends Controller
         // Получение дополнительной информации о пользователе (комментарии, избранные фильмы и т.д.)
         return view('admin.user_details', compact('user'));
     }
-    
+
 }
