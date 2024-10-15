@@ -10,15 +10,17 @@ class TrackPageViews
 {
     public function handle(Request $request, Closure $next)
     {
-        // Регистрируем событие просмотра страницы
-        if (auth()->check()) {
-            // Регистрируем событие просмотра страницы
-            Analytic::create([
-                'event_type' => 'page_view',
-                'url' => $request->fullUrl(),
-                'user_id' => auth()->id(), // ID аутентифицированного пользователя
-            ]);
-        }
+        // Получаем текущий URL
+        $url = $request->fullUrl();
+
+        // Записываем событие в базу данных
+        Analytic::create([
+            'event_type' => 'page_view',
+            'url' => $url,
+            'user_id' => auth()->id(), // Если нужно отслеживать пользователя
+            'user_agent' => $request->userAgent(), // Если нужно отслеживать User-Agent
+        ]);
+
         return $next($request);
     }
 }

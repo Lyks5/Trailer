@@ -81,11 +81,7 @@
                                     @endforeach
                                 </ul>
                                 <p><strong>Избранные:</strong></p>
-                                <ul>
-                                    @foreach($user->likes as $like)
-                                        <li>{{ $like->poster->name }}</li>
-                                    @endforeach
-                                </ul>
+                                
                             </div>
                         </td>
                     </tr>

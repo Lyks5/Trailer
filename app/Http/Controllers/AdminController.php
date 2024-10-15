@@ -192,12 +192,17 @@ class AdminController extends Controller
 
     private function getAnalyticsData()
     {
-        $pageViews = Analytic::where('event_type', 'page_view')->count();
+        $pageViews = Analytic::where('event_type', 'page_view')->get();
         $linkClicks = Analytic::where('event_type', 'link_click')->count();
         $timeOnSite = Analytic::where('event_type', 'time_on_site')->count();
 
+        // Группируем просмотры по URL
+        $pageViewsByUrl = $pageViews->groupBy('url')->map(function ($item) {
+            return $item->count();
+        });
+
         return [
-            'pageViews' => $pageViews,
+            'pageViewsByUrl' => $pageViewsByUrl,
             'linkClicks' => $linkClicks,
             'timeOnSite' => $timeOnSite
         ];
@@ -212,7 +217,7 @@ class AdminController extends Controller
     {
         $user = User::findOrFail($id);
         // Логика редактирования пользователя
-        return redirect()->route('users')->with('success', 'User updated successfully');
+        return redirect()->route('users')->with('success', 'Изменения сохранены');
     }
 
     public function blockUser(Request $request, $id)
