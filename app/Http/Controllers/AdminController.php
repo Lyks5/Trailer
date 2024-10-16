@@ -192,17 +192,25 @@ class AdminController extends Controller
 
     private function getAnalyticsData()
     {
-        $pageViews = Analytic::where('event_type', 'page_view')->get();
+        // Группируем просмотры по датам
+        $pageViewsByDate = Analytic::where('event_type', 'page_view')
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as views')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+
+        $pageViews = $pageViewsByDate->sum('views'); // Общее количество просмотров
         $linkClicks = Analytic::where('event_type', 'link_click')->count();
         $timeOnSite = Analytic::where('event_type', 'time_on_site')->count();
 
-        // Группируем просмотры по URL
-        $pageViewsByUrl = $pageViews->groupBy('url')->map(function ($item) {
-            return $item->count();
-        });
+        // Преобразуем данные для графиков
+        $pageViewsData = $pageViewsByDate->pluck('views')->toArray();
+        $pageViewsLabels = $pageViewsByDate->pluck('date')->toArray();
 
         return [
-            'pageViewsByUrl' => $pageViewsByUrl,
+            'pageViews' => $pageViews,
+            'pageViewsData' => $pageViewsData,
+            'pageViewsLabels' => $pageViewsLabels,
             'linkClicks' => $linkClicks,
             'timeOnSite' => $timeOnSite
         ];

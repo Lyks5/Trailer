@@ -163,7 +163,7 @@
 </div>
 
 <!-- Отображение текущих оценок -->
-<div class="text-gray-900 h-auto w-3/6">
+<div class="text-gray-900 max-w-screen-2xl w-full h-auto mx-auto my-0 mb-20">
     <div class="flex justify-between items-start">
         <section class="py-8 lg:py-16 w-screen">
             <div class="mx-auto">
@@ -193,27 +193,34 @@
 
                 <!-- Распределение оценок -->
                 <div class="mt-4">
-                    <p class="text-sm font-medium text-gray-500">{{ $ratings->count() }} global ratings</p>
-                    @for ($i = 10; $i >= 1; $i--)
-                        <div class="flex items-center mt-4">
-                            <a href="#" class="text-sm font-medium text-blue-600 hover:underline">{{ $i }} star</a>
-                            <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded">
-                                <div class="h-5 bg-yellow-300 rounded"
-                                    style="width: {{ $ratings->where('rank', $i)->count() / $ratings->count() * 100 }}%">
+                    @if ($ratings->count() > 0)
+                        <p class="text-sm font-medium text-gray-500">{{ $ratings->count() }} global ratings</p>
+                        @for ($i = 10; $i >= 1; $i--)
+                            <div class="flex items-center mt-4">
+                                <a href="#" class="text-sm font-medium text-blue-600 hover:underline">{{ $i }} star</a>
+                                <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded">
+                                    <div class="h-5 bg-yellow-300 rounded"
+                                        style="width: {{ $ratings->where('rank', $i)->count() / $ratings->count() * 100 }}%">
+                                    </div>
                                 </div>
+                                <span
+                                    class="text-sm font-medium text-gray-500">{{ number_format($ratings->where('rank', $i)->count() / $ratings->count() * 100, 1) }}%</span>
                             </div>
-                            <span
-                                class="text-sm font-medium text-gray-500">{{ number_format($ratings->where('rank', $i)->count() / $ratings->count() * 100, 1) }}%</span>
-                        </div>
-                    @endfor
+                        @endfor
+                    @else
+                        <p class="text-sm font-medium text-gray-500">No ratings available.</p>
+                    @endif
                 </div>
             </div>
-        </section>
     </div>
 </div>
 </div>
 </div>
 </div>
 </div>
+</section>
+
+
+
 
 @endsection

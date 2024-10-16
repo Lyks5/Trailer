@@ -119,10 +119,10 @@
         },
         series: [{
             name: 'Количество просмотров',
-            data: [analyticsData.pageViews]
+            data: @json($analyticsData['pageViewsData'])
         }],
         xaxis: {
-            categories: ['Просмотры страниц']
+            categories: @json($analyticsData['pageViewsLabels'])
         }
     });
     pageViewsChart.render();

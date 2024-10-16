@@ -12,7 +12,8 @@ class Poster extends Model
         'name',
         'description',
         'image',
-        'visibility'
+        'visibility', 
+        'created_at'
     ];
     
     public function commetns() {

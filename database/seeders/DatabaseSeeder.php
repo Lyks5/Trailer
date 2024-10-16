@@ -9,7 +9,7 @@ use App\Models\Genre;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Faker\Factory as Faker;
-
+use Carbon\Carbon;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -60,7 +60,9 @@ class DatabaseSeeder extends Seeder
             
             Когда поезд останавливается на одной из станций, Майкл решает покинуть вагон, но Чарли убеждает его остаться, предлагая ему участие в опасной игре. Майкл, не подозревая о последствиях, соглашается, и его жизнь начинает стремительно меняться.',
             'image' => 'posters/1.webp',
-            'visibility' => 1
+            'visibility' => 1,
+            'created_at' => Carbon::create(1999, 3, 31, 0, 0, 0), // Set specific creation date
+            'updated_at' => Carbon::create(1999, 3, 31, 0, 0, 0)
         ]);
         Poster::create([
             'name' => 'За пригоршню долларов',
