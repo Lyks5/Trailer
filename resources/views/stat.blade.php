@@ -10,6 +10,10 @@
 <div class="max-w-screen-2xl w-full h-auto mx-auto my-0 mb-20">
     <div class="flex justify-between pt-20">
         <h1 class="text-3xl font-bold text-gray-900">Статистика</h1>
+        <div>
+            <a href="{{ route('export.word') }}" class="btn btn-primary">Скачать в Word</a>
+            <a href="{{ route('export.excel') }}" class="btn btn-primary">Скачать в Excel</a>
+        </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">

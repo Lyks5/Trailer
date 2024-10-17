@@ -215,20 +215,33 @@ class AdminController extends Controller
             'timeOnSite' => $timeOnSite
         ];
     }
-    public function users()
+    public function users(Request $request)
     {
-        $users = User::with(['comments', 'likes'])->get();
+        $query = User::query();
+
+        // Поиск по имени, email или ID
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                    ->orWhere('email', 'like', "%$search%")
+                    ->orWhere('id', 'like', "%$search%");
+            });
+        }
+
+        // Сортировка
+        if ($request->has('sort')) {
+            $sort = $request->input('sort');
+            $direction = $request->input('direction', 'asc');
+            $query->orderBy($sort, $direction);
+        }
+
+        $users = $query->with(['comments', 'likes'])->get();
+
         return view('users', compact('users'));
     }
 
-    public function editUser(Request $request, $id)
-    {
-        $user = User::findOrFail($id);
-        // Логика редактирования пользователя
-        return redirect()->route('users')->with('success', 'Изменения сохранены');
-    }
-
-    public function blockUser(Request $request, $id)
+    public function toggleBlockUser(Request $request, $id)
     {
         $user = User::find($id);
 
@@ -236,16 +249,15 @@ class AdminController extends Controller
             return redirect()->route('users')->with('error', 'Пользователь не найден');
         }
 
-        if ($user->blocked) {
-            return redirect()->route('users')->with('error', 'Пользователь уже заблокирован');
-        }
-
-        $user->blocked = true; // Блокировка пользователя
+        // Переключаем статус блокировки
+        $user->blocked = !$user->blocked;
         $user->save();
 
-        return redirect()->route('users')->with('success', 'Пользователь успешно заблокирован');
-    }
+        // Определяем сообщение в зависимости от действия
+        $message = $user->blocked ? 'Пользователь успешно заблокирован' : 'Пользователь успешно разблокирован';
 
+        return redirect()->route('users')->with('success', $message);
+    }
     public function showUserDetails($id)
     {
         $user = User::findOrFail($id);

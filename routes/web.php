@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\ExportController;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\TrackPageViews;
 use Illuminate\Support\Facades\Route;
@@ -33,10 +33,14 @@ Route::post('/video/{id}/newComment', [App\Http\Controllers\HomeController::clas
 
 Route::get('/users', [App\Http\Controllers\AdminController::class, 'users'])->middleware([IsAdmin::class])->name('users');
 Route::get('/users/{id}/edit', [App\Http\Controllers\AdminController::class, 'editUser'])->middleware([IsAdmin::class])->name('users.edit');
-Route::post('/users/{id}/block', [App\Http\Controllers\AdminController::class, 'blockUser'])->middleware([IsAdmin::class])->name('users.block');
+Route::put('/users/{id}/toggle-block', [App\Http\Controllers\AdminController::class, 'toggleBlockUser'])->name('users.toggleBlock');
 Route::get('/users/{id}/details', [App\Http\Controllers\AdminController::class, 'showUserDetails'])->middleware([IsAdmin::class])->name('users.details');
 
 Route::get('/liked/add/{product_id}', [App\Http\Controllers\HomeController::class, 'add_liked'])->name('ToLike')->middleware(['auth', 'verified']);
 Route::get('login/yandex', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'yandex'])->name('yandex');
 Route::get('login/yandex/redirect', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'yandexRedirect'])->name('yandexRedirect');
 
+
+
+Route::get('/export/word', [ExportController::class, 'exportWord'])->name('export.word');
+Route::get('/export/excel', [ExportController::class, 'exportExcel'])->name('export.excel');
