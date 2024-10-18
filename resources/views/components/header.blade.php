@@ -107,8 +107,7 @@
                 <img class="w-16" src="{{ asset('sait/search.svg') }}" alt="Поиск">
             </button>
         </nav>
-
-        <div id="search-form" class="hidden w-10/12 flex items-center justify-center">
+        <div id="search-form" class=" w-10/12 flex items-center justify-center">
             <form action="{{ route('Search') }}" method="POST" class="flex w-10/12 items-center">
                 @csrf
                 <input type="text" name="word" placeholder="Поиск" class="border rounded  w-10/12 px-3 py-2">

@@ -29,6 +29,8 @@ Route::get('/users', [App\Http\Controllers\AdminController::class, 'users'])->na
 Route::post('/search', [App\Http\Controllers\HomeController::class, 'search'])->name('Search');
 Route::post('/video/{id}/newComment', [App\Http\Controllers\HomeController::class, 'new_comment'])->name('newComment');
 
+Route::get('/users/{id}/edit', [App\Http\Controllers\AdminController::class, 'edit'])->name('users.edit');
+Route::put('/users/{id}', [App\Http\Controllers\AdminController::class, 'update'])->name('users.update');
 
 
 Route::get('/users', [App\Http\Controllers\AdminController::class, 'users'])->middleware([IsAdmin::class])->name('users');
