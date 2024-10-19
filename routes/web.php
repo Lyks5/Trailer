@@ -32,7 +32,6 @@ Route::post('/video/{id}/newComment', [App\Http\Controllers\HomeController::clas
 Route::get('/users/{id}/edit', [App\Http\Controllers\AdminController::class, 'edit'])->name('users.edit');
 Route::put('/users/{id}', [App\Http\Controllers\AdminController::class, 'update'])->name('users.update');
 
-
 Route::get('/users', [App\Http\Controllers\AdminController::class, 'users'])->middleware([IsAdmin::class])->name('users');
 Route::get('/users/{id}/edit', [App\Http\Controllers\AdminController::class, 'editUser'])->middleware([IsAdmin::class])->name('users.edit');
 Route::put('/users/{id}/toggle-block', [App\Http\Controllers\AdminController::class, 'toggleBlockUser'])->name('users.toggleBlock');

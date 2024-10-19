@@ -48,9 +48,10 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <button data-modal-target="edit-modal" data-modal-toggle="edit-modal"
+                            <button
                                 class="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center"
-                                data-user-id="{{ $user->id }}">Редактировать</button>
+                                data-user-id="{{ $user->id }}" data-modal-target="edit-modal"
+                                data-modal-toggle="edit-modal">Редактировать</button>
                             <form action="{{ route('users.toggleBlock', $user->id) }}" method="POST" class="inline">
                                 @csrf
                                 @method('PUT')
@@ -71,9 +72,9 @@
 </div>
 
 <!-- Модальное окно для редактирования пользователя -->
-<div style="background-color: rgb(0, 0, 0, 0.4);" id="edit-modal" tabindex="-1" aria-hidden="true"
+<div style="background-color: rgba(0, 0, 0, 0.4);" id="edit-modal" tabindex="-1" aria-hidden="true"
     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] h-screen">
-    <div class="relative p-4 w-1/2 max-w-9xl max-h-9xl">
+    <div class="relative p-4 w-full max-w-4xl max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow">
             <!-- Modal header -->
@@ -94,7 +95,7 @@
             </div>
 
             <!-- Modal body -->
-            <div class="p-4 md:p-5 space-y-4">
+            <div class="p-4 md:p-5 space-y-4 z-50">
                 <form id="edit-user-form" action="#" method="POST">
                     @csrf
                     @method('PUT')

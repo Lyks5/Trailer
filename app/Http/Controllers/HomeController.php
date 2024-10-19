@@ -23,6 +23,12 @@ class HomeController extends Controller
         $like = Like::with('poster')->where('user_id', Auth::user()->id)->get();
         return view('home', ['like' => $like]);
     }
+    public function authenticated(Request $request, $user)
+    {
+        $user->update([
+            'last_login_at' => now(),
+        ]);
+    }
 
     // Показ главной страницы
     public function welcome()
@@ -179,12 +185,12 @@ class HomeController extends Controller
     public function store(Request $request, $poster_id)
     {
         $request->validate([
-            'rank' => 'required|integer|min:1|max:10', 
+            'rank' => 'required|integer|min:1|max:10',
         ]);
 
         $rating = Rating::updateOrCreate(
             ['user_id' => Auth::id(), 'poster_id' => $poster_id],
-            ['rating' => $request->rank] 
+            ['rating' => $request->rank]
         );
 
         return redirect()->back()->with('success', 'Ваша оценка сохранена.');

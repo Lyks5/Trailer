@@ -142,6 +142,8 @@ class DatabaseSeeder extends Seeder
         $this->call(GenrePosterSeeder::class);
         $this->call(RatingSeeder::class);
         $this->call(ViewsTableSeeder::class);
+        $this->call(UsersTableSeeder::class);
+        
     }
     
 }

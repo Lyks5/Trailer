@@ -11,6 +11,7 @@ use App\Models\Like;
 use App\Models\View;
 use App\Models\Rating;
 use App\Models\Analytic;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 class AdminController extends Controller
 {
@@ -138,6 +139,7 @@ class AdminController extends Controller
         $postsByMonth = $this->getPostsByMonth();
         $commentsByMonth = $this->getCommentsByMonth();
         $analyticsData = $this->getAnalyticsData();
+        $lastLoginByDay = $this->getLastLoginByDay();
 
         // Проверка данных
         if (empty($postsByMonth['labels']) || empty($postsByMonth['data'])) {
@@ -160,7 +162,8 @@ class AdminController extends Controller
             'averageRating',
             'postsByMonth',
             'commentsByMonth',
-            'analyticsData'
+            'analyticsData',
+            'lastLoginByDay'
         ));
     }
 
@@ -213,6 +216,32 @@ class AdminController extends Controller
             'pageViewsLabels' => $pageViewsLabels,
             'linkClicks' => $linkClicks,
             'timeOnSite' => $timeOnSite
+        ];
+    }
+
+    private function getLastLoginByDay()
+    {
+        $lastLoginByDay = User::select(
+            DB::raw('DATE(last_login_at) as date'),
+            DB::raw('COUNT(*) as count')
+        )
+            ->where('last_login_at', '>=', Carbon::now()->subDays(30))
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+
+        $lastLoginByDayLabels = [];
+        $lastLoginByDayData = [];
+
+        for ($i = 0; $i < 30; $i++) {
+            $date = Carbon::now()->subDays($i)->format('Y-m-d');
+            $lastLoginByDayLabels[] = $date;
+            $lastLoginByDayData[] = $lastLoginByDay->firstWhere('date', $date)->count ?? 0;
+        }
+
+        return [
+            'labels' => array_reverse($lastLoginByDayLabels),
+            'data' => array_reverse($lastLoginByDayData),
         ];
     }
     public function users(Request $request)

@@ -75,6 +75,12 @@
                 <h3 class="text-xl font-semibold text-gray-900">Количество просмотров страниц</h3>
                 <div id="pageViewsChart"></div>
             </div>
+
+            <!-- График последних входов пользователей по дням -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-xl font-semibold text-gray-900">Последние входы пользователей по дням</h3>
+                <div id="lastLoginChart"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -84,6 +90,7 @@
     // Данные для графиков
     const postsData = {!! json_encode($postsByMonth) !!};
     const commentsData = {!! json_encode($commentsByMonth) !!};
+    const lastLoginData = {!! json_encode($lastLoginByDay) !!};
     const analyticsData = {!! json_encode($analyticsData) !!};
 
     // График количества постов по месяцам
@@ -123,12 +130,27 @@
         },
         series: [{
             name: 'Количество просмотров',
-            data: @json($analyticsData['pageViewsData'])
+            data: analyticsData.pageViewsData
         }],
         xaxis: {
-            categories: @json($analyticsData['pageViewsLabels'])
+            categories: analyticsData.pageViewsLabels
         }
     });
     pageViewsChart.render();
+
+    // График последних входов пользователей по дням
+    const lastLoginChart = new ApexCharts(document.querySelector("#lastLoginChart"), {
+        chart: {
+            type: 'line'
+        },
+        series: [{
+            name: 'Последние входы пользователей',
+            data: lastLoginData.data
+        }],
+        xaxis: {
+            categories: lastLoginData.labels
+        }
+    });
+    lastLoginChart.render();
 </script>
 @endsection

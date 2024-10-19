@@ -16,7 +16,14 @@
                             </div>
                             <div class="text-1xl mb-5">
                                 <p class="mb-5">{{ Auth::user()->email }}</p>
-                                <p class="mb-5">Дата регистрации: {{ Auth::user()->created_at->format('M. j, Y') }}
+                                <p class="mb-5">Дата регистрации: {{ Auth::user()->created_at->format('M. j, Y') }}</p>
+                                <p class="mb-5">
+                                    Последний вход:
+                                    @if(Auth::user()->last_login_at)
+                                        {{ Auth::user()->last_login_at->timezone(config('app.timezone'))->format('M. j, Y H:i') }}
+                                    @else
+                                        Информация недоступна
+                                    @endif
                                 </p>
                             </div>
                             <a href="{{ route('logout') }}" onclick="event.preventDefault();
@@ -37,8 +44,9 @@
                                     <div class="flex flex-wrap flex-col mb-2">
                                         @foreach ($like as $name)
                                             @foreach ($name->poster as $item)
-                                                <div class="flex align-center border p-5">
-                                                    <img src="{{ asset($item->image) }}" alt="{{ $item->name }}">
+                                                <div class="flex items-center border p-5 mb-4">
+                                                    <img src="{{ asset($item->image) }}" alt="{{ $item->name }}"
+                                                        class="w-16 h-16 object-cover mr-4">
                                                     <a href="{{ route('Post', ['post_id' => $item->id]) }}"
                                                         class="text-primary hover:text-primary-dark transition duration-300 ease-in-out text-lg">{{ $item->name }}</a>
                                                 </div>

@@ -25,6 +25,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'last_login_at',
         'is_admin',
         'password',
     ];
@@ -37,6 +38,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+    ];
+    protected $dates = [
+        'last_login_at',
     ];
 
     /**

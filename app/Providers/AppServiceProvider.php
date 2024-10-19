@@ -22,9 +22,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Event::listen(function (SocialiteWasCalled $event)
-        {
+        Event::listen(function (SocialiteWasCalled $event) {
             $event->extendSocialite('yandex', \SocialiteProviders\Yandex\Provider::class);
         });
+    }
+    protected $listen = [
+        'Illuminate\Auth\Events\Authenticated' => [
+            'App\Listeners\UpdateLastLogin',
+        ],
+    ];
 }
-};
+;
