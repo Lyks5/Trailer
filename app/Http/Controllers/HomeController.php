@@ -188,9 +188,9 @@ class HomeController extends Controller
             'rank' => 'required|integer|min:1|max:10',
         ]);
 
-        $rating = Rating::updateOrCreate(
+        $rank = Rating::updateOrCreate(
             ['user_id' => Auth::id(), 'poster_id' => $poster_id],
-            ['rating' => $request->rank]
+            ['rank' => $request->rank]
         );
 
         return redirect()->back()->with('success', 'Ваша оценка сохранена.');
