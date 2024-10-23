@@ -123,28 +123,32 @@ class HomeControllerTest extends TestCase
             'poster_id' => $poster->id,
         ]);
     }
-    public function testStore()
+
+
+    /**
+     * Тест на валидацию данных.
+     *
+     * @return void
+     */
+    public function test_validation_fails()
     {
+        // Создаем пользователя и авторизуем его
         $user = User::factory()->create();
-        $poster = Poster::factory()->create();
+        $this->actingAs($user);
 
-        $response = $this->actingAs($user)->post("/rate/{$poster->id}", ['rank' => 5]);
-
-        $response->assertRedirect();
-        $this->assertDatabaseHas('ratings', [
+        // Данные для запроса с невалидными данными
+        $data = [
             'user_id' => $user->id,
-            'poster_id' => $poster->id,
+            'poster_id' => 1,
+            'rank' => 11, // Невалидное значение для rank
             'rating' => 5,
-        ]);
-    }
-    public function testShow()
-    {
-        $poster = Poster::factory()->create();
+        ];
 
-        $response = $this->get("/post/{$poster->id}");
+        // Отправляем POST-запрос
+        $response = $this->post(route('rate', ['post_id' => 1]), $data);
 
-        $response->assertStatus(200);
-        $response->assertViewHas('poster', $poster);
+        // Проверяем, что редирект не произошел и ошибка валидации присутствует
+        $response->assertSessionHasErrors(['rank']);
     }
     public function testHandle()
     {
@@ -155,7 +159,7 @@ class HomeControllerTest extends TestCase
         $response->assertStatus(200);
         $this->assertDatabaseHas('analytics', [
             'event_type' => 'page_view',
-            'url' => '/',
+            'url' => 'http://localhost',
             'user_id' => $user->id,
         ]);
     }

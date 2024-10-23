@@ -184,13 +184,23 @@ class HomeController extends Controller
     }
     public function store(Request $request, $poster_id)
     {
+        $validatedData = $request->validate([
+            'user_id' => 'required|integer',
+            'poster_id' => 'required|integer',
+            'rank' => 'required|integer',
+            'rating' => 'required|integer', // Добавьте валидацию для поля rating
+        ]);
+
         $request->validate([
             'rank' => 'required|integer|min:1|max:10',
         ]);
 
         $rank = Rating::updateOrCreate(
             ['user_id' => Auth::id(), 'poster_id' => $poster_id],
-            ['rank' => $request->rank]
+            [
+                'rank' => $request->rank,
+                'rating' => $request->rating, // Добавьте значение для поля rating
+            ]
         );
 
         return redirect()->back()->with('success', 'Ваша оценка сохранена.');

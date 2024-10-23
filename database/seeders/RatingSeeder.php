@@ -23,6 +23,7 @@ class RatingSeeder extends Seeder
                     'user_id' => $userId,
                     'poster_id' => $posterId,
                     'rank' => rand(1, 10), // Случайный рейтинг от 1 до 10
+                    'rating' => rand(1, 10),
                 ]);
             }
         }
