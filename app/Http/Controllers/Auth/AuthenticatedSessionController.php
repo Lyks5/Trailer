@@ -5,6 +5,11 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Laravel\Socialite\Facades\Socialite;
+use App\Models\User;
+use Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -30,6 +35,6 @@ class AuthenticatedSessionController extends Controller
 
         Auth::login($user, true);
 
-        redirect()->route('main');
+        return redirect()->route('home');
     }
 }
