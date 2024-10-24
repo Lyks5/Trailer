@@ -84,7 +84,7 @@
                 </h3>
                 <button type="button"
                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
-                    data-modal-hide="edit-modal">
+                    data-modal-hide="edit-modal" data-modal-toggle="edit-modal">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -194,26 +194,48 @@
         rows.forEach(row => tbody.appendChild(row));
     }
 
-    // Модальное окно
+    // Загрузка данных пользователя в модальное окно
     document.querySelectorAll('[data-modal-toggle="edit-modal"]').forEach(button => {
-        button.addEventListener('click', function (event) {
-            event.preventDefault();
+        button.addEventListener('click', function () {
             const userId = this.getAttribute('data-user-id');
             fetch(`/users/${userId}/edit`)
                 .then(response => response.json())
-                .then(data => {
-                    document.getElementById('name').value = data.name;
-                    document.getElementById('email').value = data.email;
+                .then(user => {
+                    document.getElementById('name').value = user.name;
+                    document.getElementById('email').value = user.email;
                     document.getElementById('edit-user-form').action = `/users/${userId}`;
-                    document.getElementById('edit-modal').classList.remove('hidden');
                 });
         });
     });
 
-    document.querySelectorAll('[data-modal-hide="edit-modal"]').forEach(button => {
-        button.addEventListener('click', function () {
-            document.getElementById('edit-modal').classList.add('hidden');
-        });
+    // Отправка формы редактирования
+    document.getElementById('edit-user-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const form = this;
+        const formData = new FormData(form);
+        const url = form.action;
+
+        fetch(url, {
+            method: 'PUT',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        }).then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert('Ошибка при обновлении пользователя');
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+                alert('Произошла ошибка при обновлении пользователя');
+            });
     });
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+
 @endsection

@@ -7,8 +7,6 @@ use App\models\Poster;
 use App\models\Genre;
 use App\Models\User;
 use App\Models\Comment;
-use App\Models\Like;
-use App\Models\View;
 use App\Models\Rating;
 use App\Models\Analytic;
 use Carbon\Carbon;
@@ -126,6 +124,9 @@ class AdminController extends Controller
         // Возвращаемся на предыдущую страницу с сообщением об успехе
         return redirect()->back()->with('success', 'Постер успешно обновлён.');
     }
+
+
+
 
     public function stat()
     {
@@ -270,19 +271,6 @@ class AdminController extends Controller
         return view('users', compact('users'));
     }
 
-    public function edit($id)
-    {
-        $user = User::findOrFail($id);
-        return response()->json($user);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $user = User::findOrFail($id);
-        $user->update($request->all());
-        return response()->json(['success' => true]);
-    }
-
     public function toggleBlockUser(Request $request, $id)
     {
         $user = User::find($id);
@@ -307,4 +295,27 @@ class AdminController extends Controller
         return view('admin.user_details', compact('user'));
     }
 
+
+    public function editUser($id)
+    {
+        $user = User::findOrFail($id);
+        return response()->json($user);
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+        ]);
+
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+
+        return response()->json(['message' => 'User updated successfully']);
+    }
 }

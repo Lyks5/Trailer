@@ -5,6 +5,7 @@ use App\Http\Middleware\TrackPageViews;
 use Illuminate\Support\Facades\Route;
 use App\Models\Analytic;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'welcome'])->middleware([TrackPageViews::class])->name('welcome');
@@ -25,6 +26,10 @@ Route::get('/stats', [App\Http\Controllers\AdminController::class, 'stat'])->nam
 Route::get('/admin/edit_poster/{post_id}', [App\Http\Controllers\AdminController::class, 'edit_poster'])->name('editPosts')->middleware([IsAdmin::class]);
 Route::post('/admin/save_edit/{poster_id}', [App\Http\Controllers\AdminController::class, 'save_edit'])->name('save_posts')->middleware([IsAdmin::class]);
 Route::get('/users', [App\Http\Controllers\AdminController::class, 'users'])->name('users')->middleware([IsAdmin::class]);
+
+Route::get('/users/{id}/edit', [AdminController::class, 'editUser'])->name('users.edit')->middleware('isAdmin');
+Route::put('/users/{id}', [AdminController::class, 'updateUser'])->name('users.update')->middleware('isAdmin');
+
 
 Route::post('/search', [App\Http\Controllers\HomeController::class, 'search'])->name('Search');
 Route::post('/video/{id}/newComment', [App\Http\Controllers\HomeController::class, 'new_comment'])->name('newComment');
