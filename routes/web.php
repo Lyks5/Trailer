@@ -17,30 +17,36 @@ Route::get('/post/{post_id}', [App\Http\Controllers\HomeController::class, 'post
 Route::post('/rate/{post_id}', [App\Http\Controllers\RatingController::class, 'store'])->middleware(['auth'])->name('rate');
 Route::get('/post/{post_id}/ratings', [App\Http\Controllers\RatingController::class, 'show'])->name('post.ratings');
 
-Route::get('/post/post/{post_id}/hide', [App\Http\Controllers\AdminController::class, 'hide'])->name('posthide')->middleware([IsAdmin::class]);
-Route::get('/post/restore/{id}', [App\Http\Controllers\AdminController::class, 'restore'])->name('postrestore');
-Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin')->middleware([IsAdmin::class]);
-Route::post('/admin/new_poster', [App\Http\Controllers\AdminController::class, 'new_poster'])->name(name: 'NewPoster')->middleware([IsAdmin::class]);
-Route::get('/new_poster', [App\Http\Controllers\AdminController::class, 'showForm'])->name('NewPosterForm');
-Route::get('/stats', [App\Http\Controllers\AdminController::class, 'stat'])->name('stat')->middleware([IsAdmin::class]);
-Route::get('/admin/edit_poster/{post_id}', [App\Http\Controllers\AdminController::class, 'edit_poster'])->name('editPosts')->middleware([IsAdmin::class]);
-Route::post('/admin/save_edit/{poster_id}', [App\Http\Controllers\AdminController::class, 'save_edit'])->name('save_posts')->middleware([IsAdmin::class]);
-Route::get('/users', [App\Http\Controllers\AdminController::class, 'users'])->name('users')->middleware([IsAdmin::class]);
+Route::middleware([IsAdmin::class])->group(function () {
+    Route::controller(AdminController::class)->group(function () {
+        // Админка
+        Route::get('/admin', 'index')->name('admin');
+        // Статистика
+        Route::get('/stats', 'stat')->name('stat');
 
-Route::get('/users/{id}/edit', [AdminController::class, 'editUser'])->name('users.edit')->middleware('isAdmin');
-Route::put('/users/{id}', [AdminController::class, 'updateUser'])->name('users.update')->middleware('isAdmin');
+        // Маршруты для управления пользователями
+        Route::get('/users', 'users')->name('users'); // Страница управления клиентами
 
+        Route::put('/users/{id}/toggle-block', 'toggleBlockUser')->name('users.toggleBlock'); // Заблокировать клиента
+
+        // Маршруты для управления постами
+        Route::get('/post/{post_id}/hide', 'hide')->name('posthide'); // Скрыть постер
+        Route::get('/post/restore/{id}', 'restore')->name('postrestore'); // Показать постер
+        Route::post('/admin/new_poster', 'new_poster')->name('NewPoster'); // Создать новый постер
+        Route::get('/new_poster', 'showForm')->name('NewPosterForm'); // Модальное окно для создания постера
+        Route::get('/admin/edit_poster/{post_id}', 'edit_poster')->name('editPosts'); // Редактирование постера
+        Route::post('/admin/save_edit/{poster_id}', 'save_edit')->name('save_posts'); // Сохранить изменения постера
+    });
+});
 
 Route::post('/search', [App\Http\Controllers\HomeController::class, 'search'])->name('Search');
 Route::post('/video/{id}/newComment', [App\Http\Controllers\HomeController::class, 'new_comment'])->name('newComment');
 
-Route::get('/users/{id}/edit', [App\Http\Controllers\AdminController::class, 'edit'])->name('users.edit');
-Route::put('/users/{id}', [App\Http\Controllers\AdminController::class, 'update'])->name('users.update');
 
-Route::get('/users', [App\Http\Controllers\AdminController::class, 'users'])->middleware([IsAdmin::class])->name('users');
-Route::get('/users/{id}/edit', [App\Http\Controllers\AdminController::class, 'editUser'])->middleware([IsAdmin::class])->name('users.edit');
-Route::put('/users/{id}/toggle-block', [App\Http\Controllers\AdminController::class, 'toggleBlockUser'])->name('users.toggleBlock');
-Route::get('/users/{id}/details', [App\Http\Controllers\AdminController::class, 'showUserDetails'])->middleware([IsAdmin::class])->name('users.details');
+Route::get('/users/{id}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('UsersEdit');
+Route::put('/users/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('UsersUpdate');
+Route::delete('/comments/{id}', [App\Http\Controllers\UserController::class, 'destroyComment'])->name('comments.destroy');
+
 
 Route::get('/liked/add/{product_id}', [App\Http\Controllers\HomeController::class, 'add_liked'])->name('ToLike')->middleware(['auth', 'verified']);
 Route::get('login/yandex', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'yandex'])->name('yandex');

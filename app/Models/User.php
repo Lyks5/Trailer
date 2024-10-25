@@ -18,10 +18,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
 
-     public function comments() {
+    public function comments()
+    {
         return $this->hasMany(Comment::class);
     }
-     
+
     protected $fillable = [
         'name',
         'email',
@@ -39,6 +40,11 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'last_login_at' => 'datetime', // Добавьте эту строку
+    ];
+
     protected $dates = [
         'last_login_at',
     ];
@@ -55,7 +61,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    
+
 
     public function likes()
     {

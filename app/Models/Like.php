@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Like extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'user_id',
         'poster_id',
@@ -16,10 +14,16 @@ class Like extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
+
     public function poster()
     {
-        return $this->hasMany(Poster::class, 'id', 'poster_id');
+        return $this->belongsTo(Poster::class);
     }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
 }

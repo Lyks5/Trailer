@@ -1,50 +1,67 @@
 <?php
-
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use App\models\Poster;
-use App\models\Genre;
+
 use App\Models\User;
+use App\Models\Like;
 use App\Models\Comment;
-use App\Models\Rating;
-use App\Models\Analytic;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Response;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 
 class UserController extends Controller
 {
-    public function index()
+    /**
+     * Отображение формы редактирования пользователя.
+     *
+     * @param  int  $id
+     * @return Response|Factory|View
+     */
+    public function edit($id)
     {
-        $users = User::all();
-        return view('users.data', compact('users'));
+        $user = User::with(['likes.poster', 'comments.poster'])->findOrFail($id);
+        return view('UsersEdit', compact('user'));
     }
 
-    public function show(User $user)
+    /**
+     * Обновление данных пользователя.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return Response|RedirectResponse
+     */
+    public function update(Request $request, $id)
     {
-        $user->load('comments');
-        return response()->json($user);
-    }
-
-    public function editUser($id)
-    {
-        $user = User::findOrFail($id);
-        return response()->json($user);
-    }
-
-    public function updateUser(Request $request, $id)
-    {
-        $user = User::findOrFail($id);
-
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
         ]);
 
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
-        return response()->json(['message' => 'User updated successfully']);
+        $user = User::findOrFail($id);
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->save();
+
+        return redirect()->back()->with('success', 'Пользователь успешно обновлен');
+    }
+
+    /**
+     * Удаление комментария.
+     *
+     * @param  int  $id
+     * @return Response|RedirectResponse
+     */
+    public function destroyComment($id)
+    {
+        $comment = Comment::findOrFail($id);
+        $comment->delete();
+
+        return redirect()->back()->with('success', 'Комментарий успешно удален');
     }
 }

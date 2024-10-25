@@ -12,11 +12,12 @@ class Poster extends Model
         'name',
         'description',
         'image',
-        'visibility', 
+        'visibility',
         'created_at'
     ];
-    
-    public function commetns() {
+
+    public function comments()
+    {
         return $this->hasMany(Comment::class);
     }
     public function views()
@@ -35,4 +36,5 @@ class Poster extends Model
     {
         return $this->hasMany(Like::class);
     }
+   
 }

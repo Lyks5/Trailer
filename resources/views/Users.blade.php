@@ -48,10 +48,8 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <button
-                                class="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center"
-                                data-user-id="{{ $user->id }}" data-modal-target="edit-modal"
-                                data-modal-toggle="edit-modal">Редактировать</button>
+                            <a href="{{ route('UsersEdit', $user->id) }}"
+                                class="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center">Редактировать</a>
                             <form action="{{ route('users.toggleBlock', $user->id) }}" method="POST" class="inline">
                                 @csrf
                                 @method('PUT')
@@ -68,56 +66,6 @@
                 @endforeach
             </tbody>
         </table>
-    </div>
-</div>
-
-<!-- Модальное окно для редактирования пользователя -->
-<div style="background-color: rgba(0, 0, 0, 0.4);" id="edit-modal" tabindex="-1" aria-hidden="true"
-    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] h-screen">
-    <div class="relative p-4 w-full max-w-4xl max-h-full">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow">
-            <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
-                <h3 class="text-xl font-semibold text-gray-900">
-                    Редактирование пользователя
-                </h3>
-                <button type="button"
-                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
-                    data-modal-hide="edit-modal" data-modal-toggle="edit-modal">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                    </svg>
-                    <span class="sr-only">Закрыт</span>
-                </button>
-            </div>
-
-            <!-- Modal body -->
-            <div class="p-4 md:p-5 space-y-4 z-50">
-                <form id="edit-user-form" action="#" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input type="text" name="name" id="name"
-                            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-black peer"
-                            required />
-                        <label for="name"
-                            class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Имя</label>
-                    </div>
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input type="email" name="email" id="email"
-                            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-black peer"
-                            required />
-                        <label for="email"
-                            class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email</label>
-                    </div>
-                    <button type="submit"
-                        class="text-white bg-black hover:bg-slate-400 focus:ring-4 focus:outline-none focus:ring-slate-200 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Сохранить</button>
-                </form>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -193,49 +141,6 @@
         const tbody = table.querySelector('tbody');
         rows.forEach(row => tbody.appendChild(row));
     }
-
-    // Загрузка данных пользователя в модальное окно
-    document.querySelectorAll('[data-modal-toggle="edit-modal"]').forEach(button => {
-        button.addEventListener('click', function () {
-            const userId = this.getAttribute('data-user-id');
-            fetch(`/users/${userId}/edit`)
-                .then(response => response.json())
-                .then(user => {
-                    document.getElementById('name').value = user.name;
-                    document.getElementById('email').value = user.email;
-                    document.getElementById('edit-user-form').action = `/users/${userId}`;
-                });
-        });
-    });
-
-    // Отправка формы редактирования
-    document.getElementById('edit-user-form').addEventListener('submit', function (event) {
-        event.preventDefault();
-        const form = this;
-        const formData = new FormData(form);
-        const url = form.action;
-
-        fetch(url, {
-            method: 'PUT',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            }
-        }).then(response => response.json())
-            .then(data => {
-                if (data.message) {
-                    alert(data.message);
-                    location.reload();
-                } else {
-                    alert('Ошибка при обновлении пользователя');
-                }
-            }).catch(error => {
-                console.error('Error:', error);
-                alert('Произошла ошибка при обновлении пользователя');
-            });
-    });
 </script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 
 @endsection
