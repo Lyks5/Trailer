@@ -41,7 +41,7 @@ Route::middleware([IsAdmin::class])->group(function () {
 
 Route::post('/search', [App\Http\Controllers\HomeController::class, 'search'])->name('Search');
 Route::post('/video/{id}/newComment', [App\Http\Controllers\HomeController::class, 'new_comment'])->name('newComment');
-
+Route::delete('/remove-from-favorites/{like_id}', [App\Http\Controllers\HomeController::class, 'removeFromFavorites'])->name('removeFromFavorites');
 
 Route::get('/users/{id}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('UsersEdit');
 Route::put('/users/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('UsersUpdate');

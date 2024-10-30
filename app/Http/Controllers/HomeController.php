@@ -21,6 +21,7 @@ class HomeController extends Controller
     public function index()
     {
         $like = Like::with('poster')->where('user_id', Auth::user()->id)->get();
+        // dd($like);
         return view('home', ['like' => $like]);
     }
     public function authenticated(Request $request, $user)
@@ -181,6 +182,18 @@ class HomeController extends Controller
         }
 
         return redirect()->back();
+    }
+    public function removeFromFavorites(Request $request, $like_id)
+    {
+        $like = Like::findOrFail($like_id);
+
+        // Проверяем, что лайк принадлежит текущему пользователю
+        if ($like->user_id == Auth::user()->id) {
+            $like->delete();
+            return redirect()->back()->with('success', 'Фильм удален из избранного.');
+        } else {
+            return redirect()->back()->with('error', 'У вас нет прав на удаление этого фильма из избранного.');
+        }
     }
     public function store(Request $request, $poster_id)
     {
