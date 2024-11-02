@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
+            $table->string('name', 50); // Тип данных varchar(50)
+            $table->string('email', 100)->unique(); // Тип данных varchar(100)
             $table->timestamp('email_verified_at')->nullable();
             $table->integer('is_admin')->default(0);
             $table->boolean('blocked')->default(false);
             $table->timestamp('last_login_at')->nullable();
-            $table->string('password');
+            $table->string('password', 100); // Тип данных varchar(100)
             $table->rememberToken();
             $table->timestamps();
         });

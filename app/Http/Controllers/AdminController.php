@@ -28,23 +28,42 @@ class AdminController extends Controller
     }
     public function new_poster(Request $request)
     {
+        // Валидация входящих данных
         $validated = $request->validate([
-            'name' => 'required',
-            'description' => 'required',
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                function ($attribute, $value, $fail) {
+                    // Удаляем лишние пробелы и приводим к нижнему регистру
+                    $normalizedName = preg_replace('/\s+/', ' ', trim(strtolower($value)));
+
+                    // Проверяем, существует ли уже постер с таким названием
+                    $existingPoster = Poster::whereRaw('LOWER(REPLACE(name, " ", "")) = ?', [str_replace(' ', '', $normalizedName)])->first();
+
+                    if ($existingPoster) {
+                        $fail('Постер с таким названием уже существует.');
+                    }
+                },
+            ],
+            'description' => 'required|string',
             'photo' => 'required|image|mimes:jpg,png,jpeg,webp|max:2048',
             'genres' => 'required',
         ]);
 
+        // Сохраняем изображение
         $name = time() . "." . $request->photo->extension();
         $destination = 'public/';
         $path = $request->photo->storeAs($destination, $name);
 
+        // Подготавливаем данные для создания постера
         $info = [
             'name' => $request->name,
             'description' => $request->description,
             'image' => 'storage/' . $name,
         ];
 
+        // Создаем или получаем существующий постер
         $poster = Poster::firstOrCreate(['name' => $info['name']], $info);
 
         if ($poster->wasRecentlyCreated) {
@@ -86,19 +105,35 @@ class AdminController extends Controller
 
         return redirect()->back();
     }
-    // Редактирование поста
     public function edit_poster($post_id)
     {
         $poster = Poster::where('id', $post_id)->first();
         return view('editPost', ['poster' => $poster]);
     }
+
     // Сохранение изменений
     public function save_edit($poster_id, Request $request)
     {
         // Валидация входящих данных
         $request->validate([
-            'name' => 'string|max:255|unique:posters,name,' . $poster_id,
-            'description' => 'string'
+            'name' => [
+                'string',
+                'max:255',
+                function ($attribute, $value, $fail) use ($poster_id) {
+                    // Удаляем лишние пробелы и приводим к нижнему регистру
+                    $normalizedName = preg_replace('/\s+/', ' ', trim(strtolower($value)));
+
+                    // Проверяем, существует ли уже постер с таким названием
+                    $existingPoster = Poster::whereRaw('LOWER(REPLACE(name, " ", "")) = ?', [str_replace(' ', '', $normalizedName)])
+                        ->where('id', '!=', $poster_id)
+                        ->first();
+
+                    if ($existingPoster) {
+                        $fail('Постер с таким названием уже существует.');
+                    }
+                },
+            ],
+            'description' => 'string',
         ]);
 
         // Находим постер по ID
@@ -124,8 +159,6 @@ class AdminController extends Controller
         // Возвращаемся на предыдущую страницу с сообщением об успехе
         return redirect()->back()->with('success', 'Постер успешно обновлён.');
     }
-
-
 
 
     public function stat()

@@ -34,9 +34,32 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Валидация входящих данных
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'name' => [
+                'required',
+                'string',
+                'max:100',
+                'unique:users',
+                function ($attribute, $value, $fail) {
+                    // Удаляем лишние пробелы и проверяем на запрещенные символы
+                    $normalizedName = preg_replace('/\s+/', ' ', trim($value));
+                    if (preg_match('/[№@<>]/', $normalizedName)) {
+                        $fail('Имя содержит запрещенные символы.');
+                    }
+                },
+            ],
+            'email' => 'required|string|email|max:100|unique:users,email,' . $id,
+        ], [
+            'name.required' => 'Имя обязательно для заполнения.',
+            'name.string' => 'Имя должно быть строкой.',
+            'name.unique' => 'Это имя пользователя уже занято.', 
+            'name.max' => 'Имя не должно превышать 100 символов.',
+            'email.required' => 'Email обязателен для заполнения.',
+            'email.string' => 'Email должен быть строкой.',
+            'email.email' => 'Email должен быть валидным.',
+            'email.max' => 'Email не должен превышать 255 символов.',
+            'email.unique' => 'Этот email уже занят.',
         ]);
 
         if ($validator->fails()) {

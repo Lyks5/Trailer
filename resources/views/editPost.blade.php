@@ -7,7 +7,7 @@
             <div class="flex justify-center">
                 <div class="w-full md:w-full">
                     <div class="bg-white shadow-md rounded px-5 py-5 flex">
-                        <img src="{{ asset($poster->image) }}" alt="" class="rounded w-48 h-48 float-left" width="200"
+                        <img src="{{ asset($poster->image) }}" alt="" class="rounded w-96 min-h-48 float-left"
                             height="200">
                         <div class="ml-5 w-full">
                             <form action="{{ route('save_posts', ['poster_id' => $poster->id]) }}" method="POST">
