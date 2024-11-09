@@ -10,6 +10,7 @@ use App\Models\Comment;
 use App\Models\Rating;
 use App\Models\Analytic;
 use Carbon\Carbon;
+use App\Models\GenrePoster;
 use Illuminate\Support\Facades\DB;
 class AdminController extends Controller
 {
@@ -105,10 +106,13 @@ class AdminController extends Controller
 
         return redirect()->back();
     }
+    // Редактирование постера
+    // Редактирование поста
     public function edit_poster($post_id)
     {
         $poster = Poster::where('id', $post_id)->first();
-        return view('editPost', ['poster' => $poster]);
+        $genres = Genre::all(); // Получаем все жанры для выпадающего списка
+        return view('editPost', ['poster' => $poster, 'genres' => $genres]);
     }
 
     // Сохранение изменений
@@ -134,6 +138,10 @@ class AdminController extends Controller
                 },
             ],
             'description' => 'string',
+            'genres' => 'required|array', // Валидация жанра
+            'genres.*' => 'exists:genres,id', // Валидация каждого жанра
+        ], [
+            'genres.required' => 'Выберите хотя бы один жанр.', // Добавляем сообщение об ошибке для жанра
         ]);
 
         // Находим постер по ID
@@ -156,11 +164,14 @@ class AdminController extends Controller
         // Сохраняем изменения
         $poster->save();
 
+        // Обновляем жанры
+        $genreIds = $request->input('genres');
+        $poster->genres()->sync($genreIds);
+
         // Возвращаемся на предыдущую страницу с сообщением об успехе
         return redirect()->back()->with('success', 'Постер успешно обновлён.');
     }
-
-
+    //контроллер Аналитики
     public function stat()
     {
         $totalPosts = Poster::count();
@@ -200,7 +211,7 @@ class AdminController extends Controller
             'lastLoginByDay'
         ));
     }
-
+    // посты за месяц
     private function getPostsByMonth()
     {
         $posts = Poster::select(DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'), DB::raw('COUNT(*) as count'))
@@ -213,7 +224,7 @@ class AdminController extends Controller
             'data' => $posts->pluck('count')
         ];
     }
-
+    // коменты за месяц
     private function getCommentsByMonth()
     {
         $comments = Comment::select(DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'), DB::raw('COUNT(*) as count'))
@@ -226,7 +237,7 @@ class AdminController extends Controller
             'data' => $comments->pluck('count')
         ];
     }
-
+    // Аналитика просмотров
     private function getAnalyticsData()
     {
         // Группируем просмотры по датам
@@ -252,7 +263,7 @@ class AdminController extends Controller
             'timeOnSite' => $timeOnSite
         ];
     }
-
+    // Контроллер функции последнего входа
     private function getLastLoginByDay()
     {
         $lastLoginByDay = User::select(
