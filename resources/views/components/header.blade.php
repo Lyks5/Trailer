@@ -44,9 +44,6 @@
             <a href="{{route('users')}}" class="block text-black relative group py-2 px-4 text-left whitespace-nowrap hover:bg-gray-200 rounded">Управление пользователями</a>
         </li>
         <li class="w-full">
-            <a href="#" class="block text-black relative group py-2 px-4 text-left whitespace-nowrap hover:bg-gray-200 rounded">Управление контентом</a>
-        </li>
-        <li class="w-full">
             <a href="{{route('stat')}}" class="block text-black relative group py-2 px-4 text-left whitespace-nowrap hover:bg-gray-200 rounded">Аналитика</a>
         </li>
     </ul>

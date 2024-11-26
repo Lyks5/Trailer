@@ -8,7 +8,10 @@
     <button @click="showSortModal = !showSortModal" class="bg-blue-500 text-white px-4 py-2 rounded-lg mb-4">Сортировать по жанру</button>
 
     <!-- Окно сортировки -->
-    <div x-show="showSortModal" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="mt-4 bg-white p-6 rounded-lg shadow-lg mb-6">
+    <div x-show="showSortModal" x-transition:enter="transition ease-out duration-300" 
+    x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" 
+    x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" 
+    x-transition:leave-end="opacity-0 transform scale-95" class="mt-4 bg-white p-6 rounded-lg shadow-lg mb-6">
         <h3 class="text-lg font-bold mb-4">Выберите жанры</h3>
         <form action="{{ route('see') }}" method="GET">
             <div class="flex flex-wrap gap-2 mb-4">
