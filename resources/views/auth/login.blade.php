@@ -1,7 +1,7 @@
 @extends('layouts.auth') <!-- Расширяем шаблон 'layouts.auth' -->
-
+<!-- Заголовок страницы -->
 @section('title')
-    Вход <!-- Заголовок страницы -->
+    Вход 
 @endsection
 
 @section('content')

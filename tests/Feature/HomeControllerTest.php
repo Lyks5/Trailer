@@ -14,17 +14,17 @@ class HomeControllerTest extends TestCase
     use RefreshDatabase;
 
     public function testIndex()
-    {
-        $user = User::factory()->create();
-        $like = Like::factory()->create(['user_id' => $user->id]);
+{
+    $user = User::factory()->create();
+    $like = Like::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->get('/home');
+    $response = $this->actingAs($user)->get('/home');
 
-        $response->assertStatus(200);
-        $response->assertViewHas('like', function ($likes) use ($like) {
-            return $likes->contains($like);
-        });
-    }
+    $response->assertStatus(200);
+    $response->assertViewHas('like', function ($likes) use ($like) {
+        return $likes->contains($like);
+    });
+}
     public function testWelcome()
     {
         $poster = Poster::factory()->create(['visibility' => 1]);

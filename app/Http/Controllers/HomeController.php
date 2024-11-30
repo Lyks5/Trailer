@@ -196,35 +196,32 @@ class HomeController extends Controller
         }
     }
     public function store(Request $request, $poster_id)
-    {
-        $validatedData = $request->validate([
-            'user_id' => 'required|integer',
-            'poster_id' => 'required|integer',
-            'rank' => 'required|integer',
-            'rating' => 'required|integer', // Добавьте валидацию для поля rating
-        ]);
+{
+    // Валидация входящих данных
+    $validatedData = $request->validate([
+        'user_id' => 'required|integer', // Обязательное целое число (ID пользователя)
+        'poster_id' => 'required|integer', // Обязательное целое число (ID поста)
+        'rank' => 'required|integer', // Обязательное целое число (ранг)
+        'rating' => 'required|integer', // Обязательное целое число (рейтинг)
+    ]);
 
-        $request->validate([
-            'rank' => 'required|integer|min:1|max:10',
-        ]);
+    // Дополнительная валидация для ранга
+    $request->validate([
+        'rank' => 'required|integer|min:1|max:10', // Ранг должен быть целым числом от 1 до 10
+    ]);
 
-        $rank = Rating::updateOrCreate(
-            ['user_id' => Auth::id(), 'poster_id' => $poster_id],
-            [
-                'rank' => $request->rank,
-                'rating' => $request->rating, // Добавьте значение для поля rating
-            ]
-        );
+    // Обновляем или создаем новую запись в таблице рейтингов
+    $rank = Rating::updateOrCreate(
+        ['user_id' => Auth::id(), 'poster_id' => $poster_id], // Условия для поиска существующей записи
+        [
+            'rank' => $request->rank, // Новое значение ранга
+            'rating' => $request->rating, // Новое значение рейтинга
+        ]
+    );
 
-        return redirect()->back()->with('success', 'Ваша оценка сохранена.');
-    }
-
-    public function show($poster_id)
-    {
-        $poster = Poster::findOrFail($poster_id);
-        // Передаем переменные в представление post.blade.php
-        return view('post', compact('poster'));
-    }
+    // Перенаправляем пользователя на предыдущую страницу с сообщением об успешном сохранении
+    return redirect()->back()->with('success', 'Ваша оценка сохранена.');
+}
 
     private function getUserRating($poster_id)
     {

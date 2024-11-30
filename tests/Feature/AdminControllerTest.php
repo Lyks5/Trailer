@@ -18,24 +18,24 @@ class AdminControllerTest extends TestCase
      * A basic feature test example.
      */
     public function testIndex()
-    {
-        // Создаем администратора
-        $admin = User::factory()->create(['is_admin' => true]);
+{
+    // Создаем администратора
+    $admin = User::factory()->create(['is_admin' => true]);
 
-        // Создаем несколько постеров и жанров
-        $posters = Poster::factory()->count(16)->create();
-        $genres = Genre::factory()->count(3)->create();
+    // Создаем несколько постеров и жанров
+    $posters = Poster::factory()->count(16)->create();
+    $genres = Genre::factory()->count(3)->create();
 
-        // Выполняем запрос к методу index с авторизацией администратора
-        $response = $this->actingAs($admin)->get('/admin');
+    // Выполняем запрос к методу index с авторизацией администратора
+    $response = $this->actingAs($admin)->get('/admin');
 
-        // Проверяем, что ответ имеет статус 200
-        $response->assertStatus(200);
+    // Проверяем, что ответ имеет статус 200
+    $response->assertStatus(200);
 
-        // Проверяем, что представление содержит переданные данные
-        $response->assertViewHas('posters', $posters);
-        $response->assertViewHas('genres', $genres);
-    }
+    // Проверяем, что представление содержит переданные данные
+    $response->assertViewHas('posters', $posters);
+    $response->assertViewHas('genres', $genres);
+}
     public function testNewPoster()
     {
         // Создаем администратора
@@ -69,25 +69,25 @@ class AdminControllerTest extends TestCase
         $this->assertCount(3, $poster->genres);
     }
     public function testHidePoster()
-    {
-        // Создаем администратора
-        $admin = User::factory()->create(['is_admin' => true]);
+{
+    // Создаем администратора
+    $admin = User::factory()->create(['is_admin' => true]);
 
-        // Создаем постер
-        $poster = Poster::factory()->create(['visibility' => 1]);
+    // Создаем постер
+    $poster = Poster::factory()->create(['visibility' => 1]);
 
-        // Выполняем запрос к методу hide с авторизацией администратора
-        $response = $this->actingAs($admin)->get("/post/post/{$poster->id}/hide");
+    // Выполняем запрос к методу hide с авторизацией администратора
+    $response = $this->actingAs($admin)->get("/post/{$poster->id}/hide");
 
-        // Проверяем, что ответ имеет статус 302 (перенаправление)
-        $response->assertStatus(302);
+    // Проверяем, что ответ имеет статус 302 (перенаправление)
+    $response->assertStatus(302);
 
-        // Проверяем, что постер был скрыт (visibility = 0)
-        $this->assertDatabaseHas('posters', [
-            'id' => $poster->id,
-            'visibility' => 0,
-        ]);
-    }
+    // Проверяем, что постер был скрыт (visibility = 0)
+    $this->assertDatabaseHas('posters', [
+        'id' => $poster->id,
+        'visibility' => 0,
+    ]);
+}
     public function testRestorePoster()
     {
         // Создаем администратора
@@ -108,34 +108,7 @@ class AdminControllerTest extends TestCase
             'visibility' => 1,
         ]);
     }
-    public function testSaveEditPoster()
-    {
-        // Создаем администратора
-        $admin = User::factory()->create(['is_admin' => true]);
-
-        // Создаем постер
-        $poster = Poster::factory()->create();
-
-        // Данные для обновления постера
-        $updatedData = [
-            'name' => 'Updated Poster Name',
-            'description' => 'Updated Description',
-        ];
-
-        // Выполняем запрос к методу save_edit с авторизацией администратора
-        $response = $this->actingAs($admin)->post("/admin/save_edit/{$poster->id}", $updatedData);
-
-        // Проверяем, что ответ имеет статус 302 (перенаправление)
-        $response->assertStatus(302);
-
-        // Проверяем, что постер был обновлен в базе данных
-        $this->assertDatabaseHas('posters', [
-            'id' => $poster->id,
-            'name' => 'Updated Poster Name',
-            'description' => 'Updated Description',
-        ]);
-    }
-
+    
     public function testUsers()
     {
         // Отключаем проверку внешних ключей

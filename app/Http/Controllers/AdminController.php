@@ -106,7 +106,6 @@ class AdminController extends Controller
 
         return redirect()->back();
     }
-    // Редактирование постера
     // Редактирование поста
     public function edit_poster($post_id)
     {
@@ -117,60 +116,60 @@ class AdminController extends Controller
 
     // Сохранение изменений
     public function save_edit($poster_id, Request $request)
-    {
-        // Валидация входящих данных
-        $request->validate([
-            'name' => [
-                'string',
-                'max:255',
-                function ($attribute, $value, $fail) use ($poster_id) {
-                    // Удаляем лишние пробелы и приводим к нижнему регистру
-                    $normalizedName = preg_replace('/\s+/', ' ', trim(strtolower($value)));
+{
+    // Валидация входящих данных
+    $request->validate([
+        'name' => [
+            'string',
+            'max:255',
+            function ($attribute, $value, $fail) use ($poster_id) {
+                // Удаляем лишние пробелы и приводим к нижнему регистру
+                $normalizedName = preg_replace('/\s+/', ' ', trim(strtolower($value)));
 
-                    // Проверяем, существует ли уже постер с таким названием
-                    $existingPoster = Poster::whereRaw('LOWER(REPLACE(name, " ", "")) = ?', [str_replace(' ', '', $normalizedName)])
-                        ->where('id', '!=', $poster_id)
-                        ->first();
+                // Проверяем, существует ли уже постер с таким названием
+                $existingPoster = Poster::whereRaw('LOWER(REPLACE(name, " ", "")) = ?', [str_replace(' ', '', $normalizedName)])
+                    ->where('id', '!=', $poster_id)
+                    ->first();
 
-                    if ($existingPoster) {
-                        $fail('Постер с таким названием уже существует.');
-                    }
-                },
-            ],
-            'description' => 'string',
-            'genres' => 'required|array', // Валидация жанра
-            'genres.*' => 'exists:genres,id', // Валидация каждого жанра
-        ], [
-            'genres.required' => 'Выберите хотя бы один жанр.', // Добавляем сообщение об ошибке для жанра
-        ]);
+                if ($existingPoster) {
+                    $fail('Постер с таким названием уже существует.');
+                }
+            },
+        ],
+        'description' => 'string',
+        'genres' => 'required|array', // Валидация жанра
+        'genres.*' => 'exists:genres,id', // Валидация каждого жанра
+    ], [
+        'genres.required' => 'Выберите хотя бы один жанр.', // Добавляем сообщение об ошибке для жанра
+    ]);
 
-        // Находим постер по ID
-        $poster = Poster::find($poster_id);
+    // Находим постер по ID
+    $poster = Poster::find($poster_id);
 
-        // Проверяем, существует ли постер
-        if (!$poster) {
-            return redirect()->back()->with('error', 'Постер не найден.');
-        }
-
-        // Обновляем поля только если они присутствуют в запросе
-        if ($request->has('name')) {
-            $poster->name = $request->name;
-        }
-
-        if ($request->has('description')) {
-            $poster->description = $request->description;
-        }
-
-        // Сохраняем изменения
-        $poster->save();
-
-        // Обновляем жанры
-        $genreIds = $request->input('genres');
-        $poster->genres()->sync($genreIds);
-
-        // Возвращаемся на предыдущую страницу с сообщением об успехе
-        return redirect()->back()->with('success', 'Постер успешно обновлён.');
+    // Проверяем, существует ли постер
+    if (!$poster) {
+        return redirect()->back()->with('error', 'Постер не найден.');
     }
+
+    // Обновляем поля только если они присутствуют в запросе
+    if ($request->has('name')) {
+        $poster->name = $request->name;
+    }
+
+    if ($request->has('description')) {
+        $poster->description = $request->description;
+    }
+
+    // Сохраняем изменения
+    $poster->save();
+
+    // Обновляем жанры
+    $genreIds = $request->input('genres');
+    $poster->genres()->sync($genreIds);
+
+    // Возвращаемся на предыдущую страницу с сообщением об успехе
+    return redirect()->back()->with('success', 'Постер успешно обновлён.');
+}
     //контроллер Аналитики
     public function stat()
     {
