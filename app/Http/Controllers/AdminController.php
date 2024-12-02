@@ -28,54 +28,62 @@ class AdminController extends Controller
         return view('posters.create', compact('genres'));
     }
     public function new_poster(Request $request)
-    {
-        // Валидация входящих данных
-        $validated = $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-                function ($attribute, $value, $fail) {
-                    // Удаляем лишние пробелы и приводим к нижнему регистру
-                    $normalizedName = preg_replace('/\s+/', ' ', trim(strtolower($value)));
+{
+    // Валидация входящих данных
+    $validated = $request->validate([
+        'name' => [
+            'required',
+            'string',
+            'max:255',
+            function ($attribute, $value, $fail) {
+                // Удаляем лишние пробелы и приводим к нижнему регистру
+                $normalizedName = preg_replace('/\s+/', ' ', trim(strtolower($value)));
 
-                    // Проверяем, существует ли уже постер с таким названием
-                    $existingPoster = Poster::whereRaw('LOWER(REPLACE(name, " ", "")) = ?', [str_replace(' ', '', $normalizedName)])->first();
+                // Проверяем, существует ли уже постер с таким названием
+                $existingPoster = Poster::whereRaw('LOWER(REPLACE(name, " ", "")) = ?', [str_replace(' ', '', $normalizedName)])->first();
 
-                    if ($existingPoster) {
-                        $fail('Постер с таким названием уже существует.');
-                    }
-                },
-            ],
-            'description' => 'required|string',
-            'photo' => 'required|image|mimes:jpg,png,jpeg,webp|max:2048',
-            'genres' => 'required',
-        ]);
+                if ($existingPoster) {
+                    $fail('Постер с таким названием уже существует.');
+                }
+            },
+        ],
+        'description' => 'required|string',
+        'photo' => 'required|image|mimes:jpg,png,jpeg,webp|max:2048',
+        'genres' => 'required',
+    ]);
 
-        // Сохраняем изображение
-        $name = time() . "." . $request->photo->extension();
-        $destination = 'public/';
-        $path = $request->photo->storeAs($destination, $name);
+    // Проверка на уникальность имени файла изображения
+    $imageName = $request->file('photo')->getClientOriginalName();
+    $existingPoster = Poster::where('image', 'like', '%' . $imageName . '%')->first();
 
-        // Подготавливаем данные для создания постера
-        $info = [
-            'name' => $request->name,
-            'description' => $request->description,
-            'image' => 'storage/' . $name,
-        ];
-
-        // Создаем или получаем существующий постер
-        $poster = Poster::firstOrCreate(['name' => $info['name']], $info);
-
-        if ($poster->wasRecentlyCreated) {
-            // Преобразуем строку жанров в массив
-            $genresArray = explode(',', $request->genres);
-            $poster->genres()->sync($genresArray);
-            return redirect()->back()->with('success', 'Постер успешно создан');
-        } else {
-            return redirect()->back()->withErrors(['error' => 'Такой постер уже существует']);
-        }
+    if ($existingPoster) {
+        return redirect()->back()->withErrors(['error' => 'Фильм с таким изображением уже существует.']);
     }
+
+    // Сохраняем изображение
+    $name = time() . "." . $request->photo->extension();
+    $destination = 'public/';
+    $path = $request->photo->storeAs($destination, $name);
+
+    // Подготавливаем данные для создания постера
+    $info = [
+        'name' => $request->name,
+        'description' => $request->description,
+        'image' => 'storage/' . $name,
+    ];
+
+    // Создаем или получаем существующий постер
+    $poster = Poster::firstOrCreate(['name' => $info['name']], $info);
+
+    if ($poster->wasRecentlyCreated) {
+        // Преобразуем строку жанров в массив
+        $genresArray = explode(',', $request->genres);
+        $poster->genres()->sync($genresArray);
+        return redirect()->back()->with('success', 'Постер успешно создан');
+    } else {
+        return redirect()->back()->withErrors(['error' => 'Такой постер уже существует']);
+    }
+}
     // Функция скрытия 
     public function hide($id)
     {
