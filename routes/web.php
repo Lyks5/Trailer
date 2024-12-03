@@ -14,7 +14,7 @@ Route::get('/see/what', [App\Http\Controllers\HomeController::class, 'see'])->mi
 Route::get('/rating', [App\Http\Controllers\HomeController::class, 'rating'])->name('rating');
 
 Route::get('/post/{post_id}', [App\Http\Controllers\HomeController::class, 'post'])->middleware(['auth'])->name('Post');
-Route::post('/rate/{post_id}', [App\Http\Controllers\RatingController::class, 'store'])->middleware(['auth'])->name('rate');
+Route::patch('/rate/{post_id}', [App\Http\Controllers\RatingController::class, 'store'])->middleware(['auth'])->name('rate');
 Route::get('/post/{post_id}/ratings', [App\Http\Controllers\RatingController::class, 'show'])->name('post.ratings');
 
 Route::middleware([IsAdmin::class])->group(function () {
@@ -35,7 +35,7 @@ Route::middleware([IsAdmin::class])->group(function () {
         Route::post('/admin/new_poster', 'new_poster')->name('NewPoster'); // Создать новый постер
         Route::get('/new_poster', 'showForm')->name('NewPosterForm'); // Модальное окно для создания постера
         Route::get('/admin/edit_poster/{post_id}', 'edit_poster')->name('editPosts'); // Редактирование постера
-        Route::post('/admin/save_edit/{poster_id}', 'save_edit')->name('save_posts'); // Сохранить изменения постера
+        Route::patch('/admin/save_edit/{poster_id}', 'save_edit')->name('save_posts'); // Сохранить изменения постера
     });
 });
 
@@ -44,7 +44,7 @@ Route::post('/video/{id}/newComment', [App\Http\Controllers\HomeController::clas
 Route::delete('/remove-from-favorites/{like_id}', [App\Http\Controllers\HomeController::class, 'removeFromFavorites'])->name('removeFromFavorites');
 
 Route::get('/users/{id}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('UsersEdit');
-Route::put('/users/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('UsersUpdate');
+Route::patch('/users/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('UsersUpdate');   
 Route::delete('/comments/{id}', [App\Http\Controllers\UserController::class, 'destroyComment'])->name('comments.destroy');
 
 

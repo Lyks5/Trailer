@@ -104,7 +104,7 @@
                     </div>
                     <form class="mb-6" method="POST" action="{{ route('rate', ['post_id' => $post->id]) }}">
                         @csrf
-
+                        @method('PATCH')
                         <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200">
                             <label for="rank" class="sr-only">Ваша оценка</label>
                             <div class="flex items-center" id="rating-stars">

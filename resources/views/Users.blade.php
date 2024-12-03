@@ -1,6 +1,9 @@
 @extends('layouts.app')
-
+<!-- Подключение JavaScript-файла -->
+@vite('resources/js/users.js')
 @section('content')
+
+<script src="{{ ('../js/users.js') }}"></script>
 <div class="max-w-screen-2xl w-full h-auto mx-auto my-0 mb-20">
     <div class="flex justify-between pt-20">
         <h1 class="text-3xl font-bold text-gray-900">Пользователи</h1>
@@ -64,6 +67,6 @@
     </div>
 </div>
 
-<!-- Подключение JavaScript-файла -->
-<script src="{{ asset('../js/users.js') }}"></script>
+
+
 @endsection

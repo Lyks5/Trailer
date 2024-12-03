@@ -101,29 +101,36 @@ class HomeController extends Controller
 
     // Страница Что посмотреть
     public function see(Request $request)
-    {
-        // Получаем все жанры
-        $genres = Genre::pluck('name')->unique()->values()->all();
+{
+    // Получаем все жанры
+    $genres = Genre::pluck('name')->unique()->values()->all();
 
-        // Получаем выбранные жанры из запроса и преобразуем их в массив
-        $selectedGenres = is_string($request->input('genres')) ? explode(',', $request->input('genres')) : $request->input('genres', []);
+    // Получаем выбранные жанры из запроса и преобразуем их в массив
+    $selectedGenres = is_string($request->input('genres')) ? explode(',', $request->input('genres')) : $request->input('genres', []);
 
-        // Если выбраны жанры, фильтруем по ним, иначе выбираем случайные постеры
-        if (!empty($selectedGenres)) {
-            $posts = Poster::whereHas('genres', function ($query) use ($selectedGenres) {
+    // Если выбраны жанры, фильтруем по ним, иначе выбираем случайные постеры
+    if (!empty($selectedGenres)) {
+        $posts = Poster::where('visibility', 1) // Добавляем фильтрацию по visibility
+            ->whereHas('genres', function ($query) use ($selectedGenres) {
                 $query->whereIn('name', $selectedGenres);
-            })->inRandomOrder()->limit(15)->get();
-        } else {
-            $posts = Poster::inRandomOrder()->limit(15)->get();
-        }
-
-        // Возвращаем представление 'see' с полученными постерами и жанрами
-        return view('see', [
-            'posts' => $posts,
-            'genres' => $genres,
-            'selectedGenres' => $selectedGenres, // Передаем выбранные жанры
-        ]);
+            })
+            ->inRandomOrder()
+            ->limit(15)
+            ->get();
+    } else {
+        $posts = Poster::where('visibility', 1) // Добавляем фильтрацию по visibility
+            ->inRandomOrder()
+            ->limit(15)
+            ->get();
     }
+
+    // Возвращаем представление 'see' с полученными постерами и жанрами
+    return view('see', [
+        'posts' => $posts,
+        'genres' => $genres,
+        'selectedGenres' => $selectedGenres, // Передаем выбранные жанры
+    ]);
+}
     // Страница Рейтинг
     public function rating(Request $request)
     {
@@ -140,7 +147,7 @@ class HomeController extends Controller
         } else {
             $posts = Poster::where('visibility', 1)
                 ->orderBy('views', 'desc') // Сортируем по просмотрам
-                ->limit(10)
+                ->limit(15)
                 ->get();
         }
 
