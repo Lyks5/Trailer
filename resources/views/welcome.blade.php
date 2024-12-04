@@ -1,20 +1,10 @@
 @extends('layouts.app')
 @section('title') Главная страница @endsection
 @section('content')
+@vite('resources/js/slider.js')
+@vite('resources/css/slider.css')
 <title>Beautiful Slider</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<style>
-    .slider-container { position: relative; overflow: hidden; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
-    .slider { display: flex; transition: transform 0.5s ease-in-out; }
-    .slider img { width: 100%; height: 400px; object-fit: cover; border-radius: 10px; }
-    .controls { position: absolute; top: 50%; left: 0; right: 0; display: flex; justify-content: space-between; transform: translateY(-50%); z-index: 10; }
-    .controls button { background: rgba(255, 255, 255, 0.7); border: none; padding: 10px; border-radius: 50%; cursor: pointer; transition: background 0.3s ease; }
-    .controls button:hover { background: rgba(255, 255, 255, 0.9); }
-    .controls button:focus { outline: none; }
-    .indicators { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; }
-    .indicator { width: 10px; height: 10px; background: rgba(255, 255, 255, 0.5); border-radius: 50%; cursor: pointer; transition: background 0.3s ease; }
-    .indicator.active { background: rgba(255, 255, 255, 0.9); }
-</style>
 <body class="bg-gray-100">
 <div class="container mx-auto my-6">
     <div class="slider-container relative overflow-hidden rounded-lg shadow-lg">
@@ -38,24 +28,6 @@
         </div>
     </div>
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const slider = document.querySelector('.slider');
-        const slides = document.querySelectorAll('.slider img');
-        const prevButton = document.querySelector('.prev');
-        const nextButton = document.querySelector('.next');
-        const indicators = document.querySelectorAll('.indicator');
-        let currentIndex = 0;
-        function showSlide(index) {
-            slider.style.transform = `translateX(-${index * 100}%)`;
-            indicators.forEach((indicator, i) => indicator.classList.toggle('active', i === index));
-        }
-        prevButton.addEventListener('click', () => showSlide(currentIndex = (currentIndex - 1 + slides.length) % slides.length));
-        nextButton.addEventListener('click', () => showSlide(currentIndex = (currentIndex + 1) % slides.length));
-        indicators.forEach((indicator, i) => indicator.addEventListener('click', () => showSlide(currentIndex = i)));
-        setInterval(() => showSlide(currentIndex = (currentIndex + 1) % slides.length), 5000);
-    });
-</script>
 <div class="container mx-auto px-4 py-8">
     <h2 class="text-2xl font-bold mb-4">10 главных премьер в кинотеатрах и на стримингах</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
