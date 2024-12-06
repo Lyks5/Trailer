@@ -56,3 +56,11 @@ Route::get('login/yandex/redirect', [App\Http\Controllers\Auth\AuthenticatedSess
 
 Route::get('/export/word', [ExportController::class, 'exportWord'])->name('export.word');
 Route::get('/export/excel', [ExportController::class, 'exportExcel'])->name('export.excel');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/password/telegram', [App\Http\Controllers\TelegramPasswordResetController::class, 'showResetForm'])->name('password.telegram.form');
+    Route::post('/password/telegram/send', [App\Http\Controllers\TelegramPasswordResetController::class, 'sendResetCode'])->name('password.telegram.send');
+    Route::post('/password/code/verify', [App\Http\Controllers\TelegramPasswordResetController::class, 'verifyCode'])->name('password.code.verify');
+    Route::post('/password/reset', [App\Http\Controllers\TelegramPasswordResetController::class, 'resetPassword'])->name('password.reset');
+}); 
+Route::post('/telegram/webhook', [TelegramBotController::class, 'handleRequest']);

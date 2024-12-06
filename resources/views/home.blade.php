@@ -34,6 +34,60 @@
                         <form id="logout-form" action="{{ route('logout') }}" method="POST">
                             @csrf
                         </form>
+
+                        <!-- Форма для отправки кода сброса пароля через Telegram -->
+                        <form method="POST" action="{{ route('password.telegram.send') }}">
+                            @csrf
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                                    Email
+                                </label>
+                                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" name="email" required autofocus>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                                    Отправить код через Telegram
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Форма для ввода кода сброса пароля -->
+                        <form method="POST" action="{{ route('password.code.verify') }}">
+                            @csrf
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="code">
+                                    Код
+                                </label>
+                                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="code" type="text" name="code" required autofocus>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                                    Подтвердить код
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Форма для сброса пароля -->
+                        <form method="POST" action="{{ route('password.reset') }}">
+                            @csrf
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                                    Новый пароль
+                                </label>
+                                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" name="password" required>
+                            </div>
+                            <div class="mb-6">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="password_confirmation">
+                                    Подтвердите пароль
+                                </label>
+                                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password_confirmation" type="password" name="password_confirmation" required>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                                    Сбросить пароль
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
