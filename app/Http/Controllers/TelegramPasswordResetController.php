@@ -14,7 +14,7 @@ class TelegramPasswordResetController extends Controller
 
     public function __construct()
     {
-        $this->telegram = new Api('7905536979:AAHZXb45rHvPkdpOVsj2vIjWb-8f0KEmCkA');
+        $this->telegram = new Api('');
     }
 
     public function showResetForm()

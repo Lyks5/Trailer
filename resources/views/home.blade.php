@@ -57,7 +57,7 @@
                         </form>
 
                         <!-- Ссылка на Telegram бота -->
-                        <a href="https://t.me/your_telegram_bot" target="_blank" class="text-blue-500 hover:underline mt-4 block">
+                        <a href="https://t.me/Afisha_Reset_Password_bot" target="_blank" class="text-blue-500 hover:underline mt-4 block">
                             Перейти к Telegram боту
                         </a>
                     </div>
