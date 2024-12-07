@@ -62,5 +62,5 @@ Route::middleware('auth')->group(function () {
     Route::post('/password/telegram/send', [App\Http\Controllers\TelegramPasswordResetController::class, 'sendResetCode'])->name('password.telegram.send');
     Route::post('/password/code/verify', [App\Http\Controllers\TelegramPasswordResetController::class, 'verifyCode'])->name('password.code.verify');
     Route::post('/password/reset', [App\Http\Controllers\TelegramPasswordResetController::class, 'resetPassword'])->name('password.reset');
+    
 }); 
-Route::post('/telegram/webhook', [TelegramBotController::class, 'handleRequest']);
