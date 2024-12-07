@@ -14,7 +14,7 @@ class TelegramPasswordResetController extends Controller
 
     public function __construct()
     {
-        $this->telegram = new Api('YOUR_TELEGRAM_BOT_TOKEN');
+        $this->telegram = new Api('7905536979:AAHZXb45rHvPkdpOVsj2vIjWb-8f0KEmCkA');
     }
 
     public function showResetForm()
@@ -89,4 +89,4 @@ class TelegramPasswordResetController extends Controller
 
         return redirect()->route('home')->with('status', 'Пароль успешно изменен.');
     }
-}
+}   

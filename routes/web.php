@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Analytic;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TelegramPasswordResetController;
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'welcome'])->middleware([TrackPageViews::class])->name('welcome');

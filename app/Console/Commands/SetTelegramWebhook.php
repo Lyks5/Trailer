@@ -13,9 +13,9 @@ class SetTelegramWebhook extends Command
     public function handle()
     {
         $url = config('app.url') . '/telegram/webhook';
-        $token = '';
+        $token = '7905536979:AAHZXb45rHvPkdpOVsj2vIjWb-8f0KEmCkA';
         $response = Http::withOptions([
-            'verify' => 'C:\Users\21067\Downloads\lets-encrypt-r3.pem',
+            'verify' => false,
         ])->post("https://api.telegram.org/bot$token/setWebhook", [
                     'url' => $url,
                 ]);
