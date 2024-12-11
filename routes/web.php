@@ -3,7 +3,9 @@ use App\Http\Controllers\ExportController;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\TrackPageViews;
 use Illuminate\Support\Facades\Route;
+
 use App\Models\Analytic;
+use App\Http\Controllers\YandexAfishaController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TelegramPasswordResetController;
@@ -17,6 +19,7 @@ Route::get('/rating', [App\Http\Controllers\HomeController::class, 'rating'])->n
 Route::get('/post/{post_id}', [App\Http\Controllers\HomeController::class, 'post'])->middleware(['auth'])->name('Post');
 Route::patch('/rate/{post_id}', [App\Http\Controllers\RatingController::class, 'store'])->middleware(['auth'])->name('rate');
 Route::get('/post/{post_id}/ratings', [App\Http\Controllers\RatingController::class, 'show'])->name('post.ratings');
+
 
 Route::middleware([IsAdmin::class])->group(function () {
     Route::controller(AdminController::class)->group(function () {
