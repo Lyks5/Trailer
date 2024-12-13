@@ -56,6 +56,30 @@
                             </div>
                         </form>
 
+                        <!-- Форма для ввода нового пароля -->
+                        @if (session('status') && session('status') === 'Код подтвержден. Введите новый пароль.')
+                            <form method="POST" action="{{ route('password.reset') }}">
+                                @csrf
+                                <div class="mb-4">
+                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                                        Новый пароль
+                                    </label>
+                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" name="password" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="password_confirmation">
+                                        Подтвердите пароль
+                                    </label>
+                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password_confirmation" type="password" name="password_confirmation" required>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                                        Сбросить пароль
+                                    </button>
+                                </div>
+                            </form>
+                        @endif
+
                         <!-- Ссылка на Telegram бота -->
                         <a href="https://t.me/Afisha_Reset_Password_bot" target="_blank" class="text-blue-500 hover:underline mt-4 block">
                             Перейти к Telegram боту

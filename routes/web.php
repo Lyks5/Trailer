@@ -61,10 +61,11 @@ Route::get('login/yandex/redirect', [App\Http\Controllers\Auth\AuthenticatedSess
 Route::get('/export/word', [ExportController::class, 'exportWord'])->name('export.word');
 Route::get('/export/excel', [ExportController::class, 'exportExcel'])->name('export.excel');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/password/telegram', [App\Http\Controllers\TelegramPasswordResetController::class, 'showResetForm'])->name('password.telegram.form');
-    Route::post('/password/telegram/send', [App\Http\Controllers\TelegramPasswordResetController::class, 'sendResetCode'])->name('password.telegram.send');
-    Route::post('/password/code/verify', [App\Http\Controllers\TelegramPasswordResetController::class, 'verifyCode'])->name('password.code.verify');
-    Route::post('/password/reset', [App\Http\Controllers\TelegramPasswordResetController::class, 'resetPassword'])->name('password.reset');
-    
-}); 
+// Обработка вебхука от Telegram
+Route::post('/telegram/webhook', [TelegramPasswordResetController::class, 'handleWebhook']);
+
+// Проверка кода для сброса пароля
+Route::post('/password/code/verify', [TelegramPasswordResetController::class, 'verifyCode'])->name('password.code.verify');
+
+// Сброс пароля
+Route::post('/password/reset', [TelegramPasswordResetController::class, 'resetPassword'])->name('password.reset');

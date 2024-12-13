@@ -12,14 +12,20 @@ class SetTelegramWebhook extends Command
 
     public function handle()
     {
+        // Убедитесь, что URL вебхука использует HTTPS
         $url = config('app.url') . '/telegram/webhook';
-        $token = '7905536979:AAHZXb45rHvPkdpOVsj2vIjWb-8f0KEmCkA';
-        $response = Http::withOptions([
-            'verify' => false,
-        ])->post("https://api.telegram.org/bot$token/setWebhook", [
-                    'url' => $url,
-                ]);
 
+        // Токен бота
+        $token = '7905536979:AAHZXb45rHvPkdpOVsj2vIjWB-8f0KEmCkA';
+
+        // Устанавливаем вебхук
+        $response = Http::withOptions([
+            'verify' => false, // Указываем путь к сертификату CA
+        ])->post("https://api.telegram.org/bot$token/setWebhook", [
+            'url' => $url,
+        ]);
+
+        // Проверяем ответ
         if ($response->successful()) {
             $this->info('Webhook set successfully.');
         } else {
